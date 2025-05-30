@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Night Report</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+	<style type="text/css">
+		/* Custom styles to fix defects */
+		body {
+			font-family: 'Montserrat', sans-serif;
+		}
+
+		.form-group label {
+			font-size: 18px;
+			/* Increased font size for Date, From Time, To Time labels */
+			font-weight: 500;
+			/* Slightly bold for better readability */
+			color: #333;
+			/* Darker text color */
+		}
+
+		/* Ensure responsiveness */
+		@media (max-width: 768px) {
+			.form-group label {
+				font-size: 16px;
+				/* Slightly smaller font size on mobile */
+			}
+		}
+
+		.form-group label {
+			font-size: 18px;
+			/* Already present */
+			font-weight: 500;
+			color: #333;
+		}
+
+		.form-group label {
+			font-size: 18px;
+			font-weight: 500;
+			color: #333;
+		}
+	</style>
+</head>
+
+<body>
+	<section>
+		<div class="container mt-4">
+
+			<div style="background-color: #FDF9FD;border: 1px solid #ddd; padding: 30px;">
+				<!-- Report Form -->
+				<form action="/generatenightreport" method="post">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="date">Date:</label>
+								<input type="date" class="form-control" name="date" id="date" required>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="fromtime">From Time:</label>
+								<input type="time" class="form-control" name="fromtime" id="fromtime" required>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="totime">To Time:</label>
+								<input type="time" class="form-control" name="totime" id="totime" required>
+							</div>
+						</div>
+					</div>
+
+					<div class="row justify-content-center mt-3">
+						<div class="col-md-3 text-center">
+							<button type="submit" class="btn  btn-primary"
+								style="background-color: #0B2F8B;border-color: #0B2F8B;">Generate Report</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<!-- Display Report Only if Data Exists -->
+			<div th:if="${reportData != null and not #lists.isEmpty(reportData)}">
+				<div class="mt-5">
+					<div class="card border-0 shadow">
+						<div class="">
+							<h2 class="text-center pt-2">Report Data</h2>
+
+							<!-- Tabs for Filtering -->
+							<ul class="nav nav-tabs" id="reportTabs" role="tablist">
+								<li class="nav-item" role="presentation">
+									<button class="nav-link active" id="all-tab" data-bs-toggle="tab"
+										data-bs-target="#all" type="button" role="tab" aria-controls="all"
+										aria-selected="true">All</button>
+								</li>
+								<li class="nav-item" role="presentation">
+									<button class="nav-link" id="inscan-tab" data-bs-toggle="tab"
+										data-bs-target="#inscan" type="button" role="tab" aria-controls="inscan"
+										aria-selected="false">Main Gate</button>
+								</li>
+								<li class="nav-item" role="presentation">
+									<button class="nav-link" id="licensegate-tab" data-bs-toggle="tab"
+										data-bs-target="#licensegate" type="button" role="tab"
+										aria-controls="licensegate" aria-selected="false">License Gate</button>
+								</li>
+							</ul>
+
+							<!-- Tab Content -->
+							<div class="tab-content" id="reportTabsContent">
+								<div class="tab-pane fade show active" id="all" role="tabpanel"
+									aria-labelledby="all-tab">
+									<div class="border-0">
+										<div class="card-body">
+											<button class="btn btn-primary mb-3 print-btn"
+												data-section="all">Print</button>
+											<button class="btn btn-success mb-3 export-btn" data-section="all">Export to
+												Excel</button>
+										</div>
+									</div>
+									<table class="table table-bordered table-striped mx-auto">
+										<thead class="thead-dark">
+											<tr>
+												<th>Sr. No.</th>
+												<th>Department</th>
+												<th>Name</th>
+												<th>Sub-Department</th>
+												<th>Check In Date-Time</th>
+												<th>Check Out Date-Time</th>
+												<th>Source</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="row, stat : ${reportData}">
+												<td th:text="${stat.index + 1}"></td>
+												<td th:text="${row.department}"></td>
+												<td th:text="${row.name}"></td>
+												<td th:text="${row.subDepartment}"></td>
+												<td th:text="${row.entryDateTime}"></td>
+												<td th:text="${row.exitDateTime}"></td>
+												<td th:text="${row.source}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div class="tab-pane fade" id="inscan" role="tabpanel" aria-labelledby="inscan-tab">
+									<div class="border-0">
+										<div class="card-body">
+											<button class="btn btn-primary mb-3 print-btn"
+												data-section="inscan">Print</button>
+											<button class="btn btn-success mb-3 export-btn" data-section="inscan">Export
+												to Excel</button>
+										</div>
+									</div>
+									<table class="table table-bordered table-striped mx-auto">
+										<thead class="thead-dark">
+											<tr>
+												<th>Sr. No.</th>
+												<th>Department</th>
+												<th>Name</th>
+												<th>Sub-Department</th>
+												<th>Check In Date-Time</th>
+												<th>Check Out Date-Time</th>
+												<th>Source</th>
+											</tr>
+										</thead>
+										<tbody id="inscan-body">
+											<tr th:each="row, stat : ${reportData}" th:if="${row.source == 'inscan'}">
+												<td class="sr-no"></td>
+												<td th:text="${row.department}"></td>
+												<td th:text="${row.name}"></td>
+												<td th:text="${row.subDepartment}"></td>
+												<td th:text="${row.entryDateTime}"></td>
+												<td th:text="${row.exitDateTime}"></td>
+												<td th:text="${row.source}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div class="tab-pane fade" id="licensegate" role="tabpanel"
+									aria-labelledby="licensegate-tab">
+									<div class="border-0">
+										<div class="card-body">
+											<button class="btn btn-primary mb-3 print-btn"
+												data-section="licensegate">Print</button>
+											<button class="btn btn-success mb-3 export-btn"
+												data-section="licensegate">Export to Excel</button>
+										</div>
+									</div>
+									<table class="table table-bordered table-striped mx-auto">
+										<thead class="thead-dark">
+											<tr>
+												<th>Sr. No.</th>
+												<th>Department</th>
+												<th>Name</th>
+												<th>Sub-Department</th>
+												<th>Check In Date-Time</th>
+												<th>Check Out Date-Time</th>
+												<th>Source</th>
+											</tr>
+										</thead>
+										<tbody id="licensegate-body">
+											<tr th:each="row : ${reportData}" th:if="${row.source == 'licensegate'}">
+												<td class="sr-no"></td> <!-- Empty cell for JS to fill -->
+												<td th:text="${row.department}"></td>
+												<td th:text="${row.name}"></td>
+												<td th:text="${row.subDepartment}"></td>
+												<td th:text="${row.entryDateTime}"></td>
+												<td th:text="${row.exitDateTime}"></td>
+												<td th:text="${row.source}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- No Records Message -->
+			<div th:if="${reportData != null and #lists.isEmpty(reportData)}">
+				<p class="text-center text-danger mt-3">No records found for the selected time range.</p>
+			</div>
+		</div>
+	</section>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	// Function to print table data
+	$(document).on("click", ".print-btn", function () {
+		const section = $(this).data("section");
+		const table = $(`#${section} table.table`);
+
+		if (!table.length || table.find('tbody tr').length === 0) {
+			alert("No data available to print!");
+			return;
+		}
+
+		// Clone the table and its styles
+		const printContent = table.clone().wrap('<div>').parent().html();
+
+		// Open a new print window
+		const printWindow = window.open('', '_blank', 'width=800,height=600');
+
+		if (!printWindow) {
+			alert("Pop-up blocked! Please allow pop-ups for this site.");
+			return;
+		}
+
+		printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Print Report</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                            padding: 10px;
+                        }
+                        h2 {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 10px;
+                        }
+                        th, td {
+                            border: 1px solid #000;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                        @media print {
+                            body {
+                                margin: 0;
+                                padding: 0;
+                            }
+                            table {
+                                page-break-inside: auto;
+                            }
+                            tr {
+                                page-break-inside: avoid;
+                                page-break-after: auto;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>Night Report - ${section}</h2>
+                    ${printContent}
+                </body>
+            </html>
+        `);
+
+		printWindow.document.close();
+
+		// Use setTimeout to ensure the document is fully loaded before printing
+		setTimeout(() => {
+			printWindow.focus();
+			printWindow.print();
+			printWindow.close();
+		}, 500); // Delay to allow the new window to render
+	});
+
+	// Function to export table data to Excel
+	function exportToExcel(section) {
+		const table = document.querySelector(`#${section} table.table`);
+		if (!table || table.querySelector('tbody').children.length === 0) {
+			alert("No data available to export!");
+			return;
+		}
+		let csv = [];
+		const rows = table.querySelectorAll('tr');
+		rows.forEach(row => {
+			const cols = row.querySelectorAll('th, td');
+			const rowData = Array.from(cols).map(col => col.innerText).join(",");
+			csv.push(rowData);
+		});
+		const csvContent = csv.join("\n");
+		const blob = new Blob([csvContent], {type: 'text/csv'});
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Night_Report_${section}.csv`;
+		a.click();
+		URL.revokeObjectURL(url);
+	}
+	// Attach export functionality to all export buttons
+	$(document).on("click", ".export-btn", function () {
+		const section = $(this).data("section");
+		exportToExcel(section);
+	});
+</script>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		let rows = document.querySelectorAll("#licensegate-body tr");
+		rows.forEach((row, index) => {
+			row.querySelector(".sr-no").textContent = index + 1; // Start from 1
+		});
+	});
+	document.addEventListener("DOMContentLoaded", function () {
+		let rows = document.querySelectorAll("#inscan-body tr");
+		rows.forEach((row, index) => {
+			row.querySelector(".sr-no").textContent = index + 1; // Start from 1
+		});
+	});
+</script>
+
+</html>

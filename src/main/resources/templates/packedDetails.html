@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<!-- Include your CSS file or add inline styles -->
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+	<section>
+		<style>
+			body {
+				font-family: 'Montserrat', sans-serif;
+				/*background-color: #f4f4f4;*/
+			}
+
+			#a {
+
+				margin: 0 10px;
+				padding: 20px;
+				background-color: #FDF9FD;
+				border-radius: 5px;
+				box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+				/* Add the box-shadow property here */
+			}
+
+			h1 {
+				text-align: center;
+				color: #007bff;
+			}
+
+			form {
+				margin-top: 20px;
+			}
+
+			label {
+				display: block;
+				font-weight: bold;
+				margin-top: 10px;
+			}
+
+			input[type="text"],
+			textarea {
+				width: 100%;
+				padding: 10px;
+				margin-top: 5px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+				font-size: 16px;
+			}
+
+
+
+			a {
+				text-decoration: none;
+				color: #007bff;
+				margin-right: 10px;
+			}
+
+			button {
+				text-decoration: underline;
+				cursor: pointer;
+				color: #fff;
+				/* Change the color to match your link color */
+				background-color: #007bff;
+				border: none;
+				padding: 10px 20px;
+				border-radius: 3px;
+				cursor: pointer;
+				margin-top: 20px;
+			}
+
+			.btn-primary {
+				background-color: #0B2F8B;
+				border-color: #0B2F8B;
+			}
+		</style>
+		<div th:if="${successMessage}">
+			<div class="alert alert-success">
+				<p th:text="${successMessage}"></p>
+			</div>
+		</div>
+		<div th:if="${errorMessage}">
+			<div class="alert alert-danger">
+				<p th:text="${errorMessage}"></p>
+			</div>
+		</div>
+
+		<div id="a" class="mt-4">
+			<h1>Packed Information</h1>
+			<div class="row" th:if="${selectedProduct}">
+				<form th:action="@{/packedsave}" method="post">
+					<label for="id">Token Number:</label>
+					<input type="text" id="id" class="form-control" name="id" th:value="${selectedProduct.id}" required
+						readonly>
+
+					<label for="aadharNumber">Aadhar Number:</label>
+					<input type="text" id="aadharNumber" class="form-control" name="aadharNumber"
+						th:value="${selectedProduct.aadharNumber}" required oninput="(function(element) { 
+								    element.value = element.value.replace(/[^\d]/g, '').substring(0, 12);
+								    element.value = element.value.replace(/(\d{3})(?=\d)/g, '$1').replace(/\s/g, ''); // Remove space after 3 digits
+								    if (!/^\d{12}$/.test(element.value)) {
+								        element.setCustomValidity('Please enter a valid 12-digit Aadhar number.');
+								    } else {
+								        element.setCustomValidity('');
+								    }
+								})(this)">
+
+					<label for="fullName">Full Name:</label>
+					<input type="text" id="fullName" class="form-control" name="fullName"
+						th:value="${selectedProduct.fullName}" required
+						oninput="(function(element) { element.value = element.value.replace(/[^a-zA-Z\s]/g, '').replace(/(\..*)\./g, '$1'); })(this)"
+						pattern="^[^\s][A-Za-zÀ-ž\s]+$" title="Enter Alphabets Only">
+
+					<label for="mobileNumber">Mobile Number:</label>
+					<input type="text" id="mobileNumber" class="form-control" name="mobileNumber"
+						th:value="${selectedProduct.mobileNumber}" required oninput="(function(element) { 
+					                    element.value = element.value.replace(/[^\d]/g, '').substring(0, 10); 
+					                    if (!/^\d{10}$/.test(element.value)) {
+					                        element.setCustomValidity('Please enter a 10-digit number.');
+					                    } else {
+					                        element.setCustomValidity('');
+					                    }
+					                })(this)">
+
+					<label for="address">Address:</label>
+					<input id="address" class="form-control mb-2" name="address" th:value="${selectedProduct.address}"
+						required pattern="^\S.*$"></input>
+
+					<label for="firmName">Firmname:</label>
+					<input id="firmName" class="form-control mb-2" name="firmName"
+						th:value="${selectedProduct.firmName}" required pattern="^\S.*$"></input>
+
+					<label for="truckNumber">Truck Number:</label>
+					<!-- In packedDetails.html, optional change if truck number should be optional: -->
+					<input id="truckNumber" class="form-control mb-2" name="truckNumber"
+						th:value="${selectedProduct.truckNumber}" pattern="^[A-Z0-9-]{0,15}$"
+						title="Truck number must be up to 15 alphanumeric characters or hyphens"></input>
+
+					<button th:if="${#strings.isEmpty(selectedProduct.fullName)}" class="btn btn-success me-2"
+						type="submit"><i class="fa fa-plus" aria-hidden="true"></i>
+						&nbsp;Save</button>
+					<button th:if="${not #strings.isEmpty(selectedProduct.fullName)}" class="btn btn-primary me-2"
+						type="submit"><i class="fa fa-refresh" aria-hidden="true"></i>
+						&nbsp;Update</button>
+
+					<!--                 <a th:href="@{/selectedProduct(productId=${selectedProduct.id})}" class="btn btn-primary mt-4" ><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp;ID Card</a>-->
+
+					<a th:if="${!#strings.isEmpty(selectedProduct.id) and !#strings.isEmpty(selectedProduct.aadharNumber) and !#strings.isEmpty(selectedProduct.fullName) and !#strings.isEmpty(selectedProduct.mobileNumber) and !#strings.isEmpty(selectedProduct.address)}"
+						th:href="@{/selectedPacked(productId=${selectedProduct.id})}" class="btn btn-primary me-2"
+						style="margin-top: 20px;"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp;ID Card</a>
+
+					<a th:href="@{/generateQRCode(data=${selectedProduct.id})}" class="btn btn-success"
+						style="display: none;"><i class="bi bi-qr-code-scan pe-2"></i> </a>
+
+					<button class="btn btn-danger me-2" onclick="window.location.href='/packed/back'"><i
+							class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
+
+
+
+					<a th:if="${not #strings.isEmpty(selectedProduct.fullName)}"
+						th:href="@{/delete-Packed-details(productId=${selectedProduct.id})}" class="btn btn-danger me-2"
+						style="margin-top: 20px;"
+						onclick="return confirm('Are you sure you want to delete information?')"> <i class="fa fa-trash"
+							aria-hidden="true"></i>&nbsp;Delete</a> <!-- Fixed Defect 7 -->
+				</form>
+			</div>
+		</div>
+
+		<script th:inline="javascript">
+			var errorMessage = /*[[${errorMessage}]]*/ null;
+			var successMessage = /*[[${successMessage}]]*/ null;
+
+			if (successMessage !== null && !window.performance.getEntriesByType('navigation')[0]?.type.includes('back_forward')) {
+				alert(successMessage);
+				// Clear flash attributes to prevent re-display on back navigation
+				fetch(window.location.pathname, {method: 'GET'})
+					.then(() => {
+						window.history.replaceState({}, document.title, window.location.pathname);
+					});
+			}
+
+			if (errorMessage !== null) {
+				document.getElementById("errorPopup").textContent = "Error: " + errorMessage;
+				document.getElementById("errorPopup").style.display = "block";
+			}
+		</script>
+	</section>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Details</title>
+    <!-- Assuming you have necessary CSS and JS files included -->
+</head>
+<body>
+    <section>
+        <div class="col-lg-12 mt-4">
+            <!-- Content goes here if needed -->
+        </div>
+        
+        <table class="table table-striped table-bordered" id="myTable">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Sub Department</th>
+                    <th scope="col">Time in</th>
+                    <th scope="col"> Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate through the inscanDetailsForVisitor list and populate the table rows -->
+                <tr th:each="inscan : ${inscanDetailsForVisitor}" class="text-center">
+                    <td><span th:text="${inscan.ofcid}"></span></td>
+                    <td><span th:text="${inscan.name}"></span></td>
+                    <td><span th:text="${inscan.department}"></span></td>
+                    <td><span th:text="${inscan.sub_department}"></span></td>
+                    <td style="display: none;"><span th:text="${inscan.details}"></span></td>
+                    <td><span th:text="${inscan.entryDateTime}"></span></td>
+                    <td>
+                        <!-- Pass 'this' to toggleButton() to refer to the button being clicked -->
+<!--                        <button class="restrictButton" onclick="toggleButton(this)">Restrict</button> -->     
+					<a  th:href="@{/restrictVisitor(visitorId=${inscan.ofcid})}" class="btn btn-danger me-2" style="margin-top: 20px;"
+					    onclick="return confirm('Are you sure you want to Restrict this Person?')"> Restrict </a>
+				    <a  th:href="@{/unrestrictVisitor(visitorId=${inscan.ofcid})}" class="btn btn-danger me-2" style="margin-top: 20px;"
+					    onclick="return confirm('Are you sure you want to Unrestrict this Person?')"> Unrestrict </a>
+	
+	               </td>
+                    
+                     <!-- Script placed at the end of the body section -->
+					    <script>
+					        // Function to toggle the state of the button
+					        function toggleButton(button) {
+					            // Find the parent row of the button
+					            var row = button.closest('tr');
+					            
+					            // You can retrieve user information from the row, for example:
+					            var userId = row.querySelector('td:nth-child(1) span').innerText;
+					            
+					            // Here you can perform additional actions or send an AJAX request to the backend
+					            // to handle the user restriction
+					            
+					            // Example AJAX request using fetch API
+					            fetch('/restrictVisitor', {
+					                method: 'POST',
+					                headers: {
+					                    'Content-Type': 'application/json',
+					                },
+					                body: JSON.stringify({ userId: userId }),
+					            })
+					            .then(response => {
+					                // Handle response
+					                if (response.ok) {
+					                    // Toggle the button's text to "Unrestrict" when clicked
+					                    if (button.innerText === 'Restrict') {
+					                        button.innerText = 'Unrestrict';
+					                    } else {
+					                        button.innerText = 'Restrict';
+					                    }
+					                } else {
+					                    // Handle error response
+					                    console.error('Failed to restrict/unrestrict user');
+					                }
+					            })
+					            .catch(error => {
+					                // Handle fetch error
+					                console.error('Error:', error);
+					            });
+					        }
+					    </script>
+                </tr>
+            </tbody>
+        </table>  
+        <div class="text mt-3">
+            <a class="btn btn-outline-primary" href="javascript:history.back()" style="background-color:#0B2F8B;color: white;">Back</a>
+        </div>
+    </section>
+
+   
+</body>
+</html>

@@ -1,0 +1,503 @@
+<html lang="en" xmlns:th="http://www.thymeLeaf.org" th:fragment="Layout(content)">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>HPCL In-Out</title>
+	<link rel="icon" th:href="@{/img/Hindustan.png}" type="image/png">
+	
+
+
+	<style>
+		body {
+			font-family: 'Montserrat', sans-serif !important;
+			background: #fafafa;
+			margin: 0;
+		}
+
+		.wrapper {
+			overflow-y: auto;
+			display: flex;
+			width: 100%;
+		}
+
+		.logo {
+			background-color: #f1f1f1;
+			width: 100%;
+			/* Adjusted to take full width of sidebar */
+			margin-left: 0;
+			margin-right: 0;
+			padding: 10px 0;
+			/* Add padding for better spacing */
+			text-align: center;
+			/* Center the logo */
+		}
+
+		.logo img {
+			width: 220px;
+			/* Adjusted to match the logo size in the image */
+			margin: 0 auto;
+			/* Center the image */
+		}
+
+		#sidebar.btn:hover {
+			color: #fff;
+			transition: all 0.3s;
+		}
+
+		.line {
+			width: 100%;
+			height: 1px;
+			border-bottom: 1px dashed #ddd;
+			margin: 40px 0;
+		}
+
+		#sidebar {
+			width: 280px;
+			position: fixed;
+			height: 100vh;
+			z-index: 999;
+			min-width: 280px;
+			max-width: 280px;
+			background: #0B2F8B;
+			color: #fff;
+			transition: all 0.3s;
+			display: flex;
+			flex-direction: column;
+		}
+
+		#sidebar.active {
+			margin-left: -280px;
+		}
+
+		#sidebar .sidebar-header {
+			padding: 10px;
+			/* Adjusted to match the spacing in the image */
+			background: #0B2F8B;
+		}
+
+		#sidebar .sidebar-manasvi {
+			display: none;
+			/* Hide the Manasvi logo section */
+		}
+
+		#sidebar ul.components {
+			padding: 10px 0;
+			/* Adjusted padding to match the image */
+			flex-grow: 1;
+			overflow-y: auto;
+			scrollbar-width: none;
+			-ms-overflow-style: none;
+		}
+
+		#sidebar ul.components::-webkit-scrollbar {
+			display: none;
+		}
+
+		#sidebar ul p {
+			color: #fff;
+			padding: 10px;
+		}
+
+		#sidebar ul li a {
+			padding: 12px 15px;
+			/* Adjusted padding to match the image */
+			font-size: 1em;
+			/* Adjusted font size to match the image */
+			display: flex;
+			/* Use flex to align icon and text */
+			align-items: center;
+			/* Center vertically */
+			color: white;
+			text-decoration: none;
+			position: relative;
+			/* For dropdown arrow positioning */
+		}
+
+		#sidebar ul li a:hover {
+			color: #0B2F8B;
+			/* Dark blue text on hover to match the image */
+			background: #fff;
+			/* White background on hover */
+			text-decoration: none;
+		}
+
+		#sidebar ul li.active>a,
+		a[aria-expanded="true"] {
+			color: #0B2F8B;
+			/* Dark blue text for active state */
+			background: #fff;
+			/* White background for active state */
+			text-decoration: none;
+		}
+
+		a[data-toggle="collapse"] {
+			position: relative;
+			text-decoration: none;
+		}
+
+		.dropdown-toggle::after {
+			display: block;
+			position: absolute;
+			top: 50%;
+			right: 15px;
+			/* Adjusted to match the arrow position in the image */
+			transform: translateY(-50%);
+			transition: all 0.3s ease-in-out;
+			border: none;
+			/* Remove default arrow */
+			content: "\f078";
+			/* Font Awesome chevron-down icon */
+			font-weight: 900;
+			font-size: 12px;
+			/* Match the arrow size in the image */
+		}
+
+		/* Rotate the arrow when the dropdown is open */
+		a[aria-expanded="true"] .dropdown-toggle::after {
+			transform: translateY(-50%) rotate(180deg);
+		}
+
+		ul ul.submenu {
+			padding-left: 0 !important;
+			/* Remove extra padding */
+			background: #0B2F8B;
+			color: white;
+			max-height: 300px;
+			overflow-y: auto;
+			scrollbar-width: none;
+			-ms-overflow-style: none;
+		}
+
+		ul ul.submenu::-webkit-scrollbar {
+			display: none;
+		}
+
+		ul ul a {
+			padding: 10px 15px 10px 45px !important;
+			/* Adjusted padding to indent submenu items */
+			background: #0B2F8B;
+			color: white;
+			font-size: 0.9em;
+			/* Slightly smaller font for submenu items */
+		}
+
+		ul ul a:hover {
+			color: #0B2F8B;
+			background: #fff;
+		}
+
+		ul.active {
+			padding: 20px;
+			border-radius: 5px;
+			margin-bottom: 5px;
+			display: block;
+			text-align: center;
+		}
+
+		.content {
+			width: 100%;
+			padding: 10px;
+			min-height: 100vh;
+			transition: all 0.3s;
+			margin-left: 280px;
+		}
+
+		.hidden {
+			width: 0;
+			display: none;
+		}
+
+		/* Button Styles */
+		.hamburger-btn {
+			background-color: transparent;
+			border: none;
+			cursor: pointer;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 30px;
+			padding: 5px;
+			transition: transform 0.3s;
+		}
+
+		.hamburger-line {
+			width: 30px;
+			height: 3px;
+			background-color: #333;
+			margin: 2px 0;
+			transition: background-color 0.3s;
+		}
+
+		.hamburger-line.active {
+			background-color: #000;
+		}
+
+		.hamburger-btn.toggled {
+			transform: rotate(180deg);
+		}
+
+		#sidebar.active+.content {
+			margin-left: 0;
+			margin-right: 0;
+			width: 100%;
+		}
+
+		.navbar {
+			background-color: #0B2F8B;
+			width: 100%;
+			padding: 10px;
+		}
+
+		.container-fluid {
+			padding: 0;
+			margin: 0;
+			width: 100%;
+		}
+
+		/* Date/Time Styling */
+		#datetime {
+			font-size: 14px;
+			/* Match the font size in the image */
+			color: #fff;
+			padding: 10px 0;
+			/* Adjusted padding to match the image */
+			background: #0B2F8B;
+		}
+
+		#datetime span {
+			font-weight: bold;
+		}
+
+		/* Icon Styling */
+		#sidebar ul li a i {
+			margin-right: 10px;
+			/* Space between icon and text */
+			width: 20px;
+			/* Ensure consistent icon width */
+			text-align: center;
+			/* Center the icon */
+		}
+
+		/* Hide the red text sections */
+		.sidebar div.mt-2,
+		.sidebar div.mt-4 {
+			display: none;
+			/* Hide the red text sections */
+		}
+	</style>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar">
+			<div class="sidebar-header">
+				<div class="logo"><a href="/"><img src="/img/logoHPCL.png" class="img-fluid" alt="HPCL Logo"
+							style="max-width: 300px;"></a></div>
+			</div>
+			<div id="datetime" class="text-center mt-3">
+				<span class="text-white;">NOW:</span>
+			</div>
+			<ul class="list-unstyled components font-weight">
+				<li class="active">
+					<div class="sidebar fs-5 mx-1">
+						<ul class="nav flex-column" id="nav_accordion">
+							<li id="dashboardMenuItem" style="color:white;">
+								<a href="/"><i class="fas fa-home"></i> Dashboard</a>
+							</li>
+							<li id="inventoryStructureMenuItem" th:if="${userRole != 'security'}">
+								<a href="#inventory_structure" data-toggle="collapse" aria-expanded="false"
+									class="dropdown-toggle"><i class="fas fa-users"></i> Operation</a>
+								<ul class="collapse list-unstyled submenu" id="inventory_structure">
+									<li><a href="officer">Officer</a></li>
+									<li><a href="employeecreate">Employee</a></li>
+									<li><a href="contractor">Contractor</a></li>
+									<li><a href="contractorworkman">Contractor Workman</a></li>
+									<li><a href="mathadi">Mathadi</a></li>
+									<li><a href="gat">Gat</a></li>
+									<li><a href="tat">Tat</a></li>
+									<li><a href="feg">Feg</a></li>
+									<li><a href="sec">Sec</a></li>
+								</ul>
+							</li>
+							<li id="productmasterMenuItem" th:if="${userRole != 'security'}">
+								<a href="#product" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+									<i class='fas fa-truck'></i> Driver</a>
+								<ul class="collapse list-unstyled submenu" id="product">
+									<li><a href="packed">Packed</a></li>
+									<li><a href="bulk">Bulk</a></li>
+									<li><a href="transporter">Transporter</a></li>
+								</ul>
+							</li>
+							<li id="projectMenuItem" th:if="${userRole != 'security'}">
+								<a href="#Project" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+									<i class="fas fa-id-card"></i> Project</a>
+								<ul class="collapse list-unstyled submenu" id="Project">
+									<li><a href="workman">Workman</a></li>
+									<li><a href="amc">Amc</a></li>
+								</ul>
+							</li>
+							<li id="visitorMenuItem">
+								<a href="#Visitor" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+									<i class="fas fa-users"></i> Visitor</a>
+								<ul class="collapse list-unstyled submenu" id="Visitor">
+									<li><a href="visitor">Visitor</a></li>
+								</ul>
+							</li>
+							<li id="reportMenuItem">
+								<a href="#Report" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+									<i class="fas fa-address-book"></i> Report</a>
+								<ul class="collapse list-unstyled submenu" id="Report">
+									<li><a href="report">Advance Report</a></li>
+									<li><a href="nightreport">Night Report</a></li>
+								</ul>
+							</li>
+							<li id="settingsMenuItem">
+								<a href="#settings" data-toggle="collapse" aria-expanded="false"
+									class="dropdown-toggle">
+									<i class="fas fa-cog"></i> Settings</a>
+								<ul class="collapse list-unstyled submenu" id="settings">
+									<li><a href="setting">Setting</a></li>
+								</ul>
+							</li>
+						</ul>
+						<div class="sidebar-manasvi">
+							<div class="logo"><a href="/"><img src="/img/manasvilogo.jpg" class="img-fluid"
+										alt="HPCL Logo" style="max-width: 200px;"></a></div>
+						</div>
+						<div class="mt-2" th:if="${onedayremain!=true}">
+							<p class="text-center text-danger"
+								th:text="${remainingdays}+' Days Remaining For License to Expire !'"></p>
+						</div>
+						<div class="mt-4" th:if="${onedayremain==true}">
+							<p class="text-center text-danger" th:text="' Your License will expire tomorrow !'"></p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</nav>
+
+		<div class="content" id="abc">
+			<div class="container-fluid">
+				<div class="navbar text-center" style="box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.1);">
+					<button type="button" id="sidebarCollapse" class="btn  text-center my-auto" style="color: white;">
+						<i class="fa fa-navicon" style="font-size: 26px;"></i>
+					</button>
+					<a class="navbar-brand d-block" id="navbarHeading"
+						style="font-weight: 900;color:white; margin: 0 auto;">HPCL INOUT</a>
+					<p style="font-size: 18px; font-weight: bold; color: white; margin-top: 10px; margin-bottom: 10px;">
+						<span
+							th:text="${username != null ? (username.equals('admin') ? 'Admin' : username) : ''}"></span>
+					</p>
+					<a th:href="@{/logout}" class="btn btn-danger me-3" style="margin-left: 10px;">Logout</a>
+				</div>
+			</div>
+			<div th:replace="${content}"></div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const menuItems = document.querySelectorAll(".nav.flex-column > li");
+
+			menuItems.forEach(menuItem => {
+				menuItem.addEventListener("click", function () {
+					menuItems.forEach(item => {
+						if (item !== menuItem && item.classList.contains("active")) {
+							item.classList.remove("active");
+							const submenu = item.querySelector(".submenu");
+							if (submenu) {
+								new bootstrap.Collapse(submenu).hide();
+							}
+						}
+					});
+
+					menuItem.classList.toggle("active");
+				});
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#sidebarCollapse').on('click', function () {
+				$('#sidebar').toggleClass('active');
+				$('#abc').toggleClass('expanded');
+
+				if ($('#abc').hasClass('expanded')) {
+					$('#abc').css('width', '100%');
+					$('#abc').css('margin-left', '0');
+					$('#abc').css('margin-right', '0');
+				} else {
+					$('#abc').css('width', '');
+					$('#abc').css('margin-left', '280px');
+				}
+			});
+		});
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var navbarHeading = document.getElementById("navbarHeading");
+			var sectionName = localStorage.getItem("sectionName");
+
+			if (sectionName) {
+				navbarHeading.textContent = sectionName;
+			}
+
+			var sidebarLinks = document.querySelectorAll("#sidebar a");
+
+			sidebarLinks.forEach(function (link) {
+				link.addEventListener("click", function (event) {
+					var sectionName = link.textContent.trim();
+					navbarHeading.textContent = sectionName;
+					localStorage.setItem("sectionName", sectionName);
+					event.preventDefault();
+					window.location.href = link.getAttribute("href");
+				});
+			});
+		});
+	</script>
+	<script>
+		function updateDateTime() {
+			const datetimeElement = document.getElementById("datetime");
+			const currentTime = new Date();
+			const options = {year: 'numeric', month: 'numeric', day: 'numeric'};
+			const options2 = {hour: '2-digit', minute: '2-digit', second: '2-digit'};
+			const formattedDate = currentTime.toLocaleDateString('en-US', options);
+			const formattedTime = currentTime.toLocaleTimeString('en-US', options2);
+			const formattedDateTime = "NOW: " + formattedDate + " @ " + formattedTime;
+			datetimeElement.textContent = formattedDateTime;
+		}
+
+		updateDateTime();
+		setInterval(updateDateTime, 1000);
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Check if this is a fresh login by looking at the current URL
+			if (window.location.pathname === "/" || window.location.pathname === "/login") {
+				// Reset the navbar heading to "Dashboard" on login
+				localStorage.setItem("sectionName", "Dashboard");
+				document.getElementById("navbarHeading").textContent = "Dashboard";
+			}
+		});
+	</script>
+</body>
+
+</html>

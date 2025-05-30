@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css}" rel="stylesheet" />
+	<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js}"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+	<title>Contractor</title>
+	<link th:href="@{/styles.css}" rel="stylesheet" />
+</head>
+
+<body>
+	<section>
+		<style>
+			body{
+				font-family: 'Montserrat', sans-serif;
+			}
+			/* Scope styles to section to avoid affecting navbar */
+			section .image-container {
+				text-align: center;
+				position: relative;
+			}
+
+			section .image-id {
+				position: absolute;
+				top: 55%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 5px;
+			}
+
+			section .row.mb-4 {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: start;
+			}
+
+			section .contractor-card {
+				flex: 0 0 20%;
+				/* Default 5 cards per row */
+				max-width: 20%;
+			}
+
+			section .card {
+				width: 100%;
+				height: 100%;
+				/* Changed from height: 300px to match officer.html */
+				margin: 0;
+				min-height: 200px !important;
+				/* Reduced from 300px to 200px to match officer.html */
+				overflow: hidden;
+				/* Added to match officer.html */
+			}
+
+			section .btn {
+				white-space: nowrap;
+				/* Prevent button text wrapping */
+				display: block;
+				/* Ensure button takes full width */
+				text-align: center;
+				/* Center text */
+				border-radius: 0 0 4px 4px;
+				/* Match card border-radius at bottom */
+			}
+
+			/* Responsive Adjustments */
+			@media (max-width: 576px) {
+
+				/* Mobile view */
+				section .container {
+					padding: 0 10px;
+				}
+
+				section .mt-5 {
+					margin-top: 2rem !important;
+				}
+
+				section .ms-3 {
+					margin-left: 0.5rem !important;
+				}
+
+				section .d-flex {
+					flex-direction: column;
+					align-items: stretch;
+					gap: 10px;
+				}
+
+				section #sec_count,
+				section #mysubmit,
+				section #searchInput {
+					width: 100% !important;
+					margin-left: 0 !important;
+				}
+
+				section #searchInput {
+					max-width: 100%;
+					/* Prevent overflow */
+				}
+
+				section .col-sm-3,
+				section .col-sm-1,
+				section .col-12 {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+
+				section .contractor-card {
+					flex: 0 0 50%;
+					/* 2 cards per row */
+					max-width: 50%;
+				}
+
+				section .btn {
+					width: 100% !important;
+					/* Full-width buttons */
+					font-size: 14px;
+					/* Adjust font size */
+				}
+			}
+
+			@media (min-width: 577px) and (max-width: 768px) {
+
+				/* Tablet view */
+				section .d-flex {
+					flex-direction: row;
+					flex-wrap: wrap;
+					gap: 10px;
+				}
+
+				section #sec_count {
+					width: 40% !important;
+				}
+
+				section #mysubmit {
+					width: 20% !important;
+				}
+
+				section #searchInput {
+					margin-left: 2rem !important;
+					/* Matched with #searchOfficer */
+					width: 100%;
+					/* Matched with #searchOfficer */
+				}
+
+				section .contractor-card {
+					flex: 0 0 33.33%;
+					/* 3 cards per row */
+					max-width: 33.33%;
+				}
+
+				section .btn {
+					width: 100% !important;
+					/* Full-width buttons */
+				}
+
+				section .card {
+					min-height: 220px !important;
+					/* Reduced from 320px to 220px to match officer.html */
+				}
+			}
+
+			@media (min-width: 769px) and (max-width: 992px) {
+
+				/* Small desktop */
+				section #searchInput {
+					margin-left: 11rem !important;
+					/* Matched with #searchOfficer */
+					width: 75%;
+					/* Matched with #searchOfficer */
+				}
+
+				section .contractor-card {
+					flex: 0 0 25%;
+					/* 4 cards per row */
+					max-width: 25%;
+				}
+
+				section .btn {
+					width: 100% !important;
+					/* Full-width buttons */
+				}
+			}
+
+			@media (min-width: 993px) {
+
+				/* Large desktop */
+				section #searchInput {
+					margin-left: 11rem !important;
+					/* Matched with #searchOfficer */
+					width: 70%;
+					/* Matched with #searchOfficer */
+				}
+
+				section .contractor-card {
+					flex: 0 0 20%;
+					/* 5 cards per row */
+					max-width: 20%;
+				}
+
+				section .btn {
+					width: 100% !important;
+					/* Full-width buttons to match card */
+				}
+			}
+
+			#mysubmit {
+				width: 100px !important;
+			}
+
+			.btn-primary {
+				background-color: #0B2F8B;
+				border-color: #0B2F8B;
+			}
+
+			.btn-primary:hover {
+				background-color: #0B2F8B;
+				/* Keeps the same color on hover */
+			}
+
+			section .operator-name {
+				font-size: 12px;
+				font-weight: bold;
+				white-space: nowrap;
+				/* Prevent wrapping */
+				overflow: hidden;
+				/* Hide overflow */
+				text-overflow: ellipsis;
+				/* Add ellipsis for long text */
+				max-width: 100%;
+				/* Constrain width */
+			}
+
+			section .card-body {
+				overflow: hidden;
+				/* Prevent overflow from breaking layout */
+				padding: 10px;
+				/* Added to match officer.html */
+				padding-top: 0px !important;
+			}
+
+			@media (min-width: 769px) {
+				#searchinput {
+					margin-left: 15rem !important;
+					width: 100%;
+				}
+			}
+
+			.count-container {
+				margin-bottom: 5px;
+			}
+
+			.count-container+.horizontal-line {
+				content: "";
+				display: block;
+				width: 100%;
+				height: 1px;
+				background-color: #e0e0e0;
+				margin: 0px auto 0px auto;
+				position: relative;
+			}
+
+			.card-body {
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+
+			.count-container {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.count-id {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+
+			.horizontal-line {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.image-container {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.operator-name {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.text-center {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			h5 {
+				margin-bottom: 0.9rem;
+			}
+		</style>
+
+		<div class="container mt-3">
+			<div th:if="${successMessage}" class="alert alert-success" id="successMessage">
+				<p th:text="${successMessage}"></p>
+			</div>
+			<div th:if="${errorMessage}" class="alert alert-danger" id="errorMessage">
+				<p th:text="${errorMessage}"></p>
+			</div>
+
+			<script th:inline="javascript">
+				document.addEventListener("DOMContentLoaded", function () {
+					setTimeout(function () {
+						var successMessage = document.getElementById('successMessage');
+						var errorMessage = document.getElementById('errorMessage');
+						if (successMessage) successMessage.style.display = 'none';
+						if (errorMessage) errorMessage.style.display = 'none';
+					}, 5000);
+				});
+			</script>
+
+			<div class="row">
+				<div class="mt-3 ms-3 mb-3 d-flex">
+					<div class="col-sm-3">
+						<input type="number" name="sec_count" id="sec_count" class="form-control"
+							placeholder="Enter Number of Sec" min="1" required
+							oninvalid="this.setCustomValidity('Please enter a positive number greater than 0')"
+							onchange="this.setCustomValidity('')" />
+					</div>
+					<div class="col-sm-1">
+						<input type="button" id="mysubmit" value="Add Sec" class="btn btn-primary ms-5"
+							onclick="addSec()" required />
+					</div>
+					<div class="col-12 col-md-6 search-container">
+						<input type="text" id="searchInput" class="form-control ms-3"
+							placeholder="Search by Name or Aadhar" />
+					</div>
+				</div>
+				<div id="contractor_fields" class="mt-3 ms-3" style="display: none;"></div>
+			</div>
+			<div class="row mb-4">
+				<div th:each="sec : ${secDetails}" class="col-lg-2 col-md-3 col-sm-6 mb-3 contractor-card">
+					<div class="card mb-4 ms-2 d-flex flex-column">
+						<div class="card-body text-center"
+							style="flex-grow: 1;flex-direction: column; align-items: center; justify-content: space-between;">
+							<div class="badge-container">
+								<div class="badge badge-danger my-1 rounded text-center font-weight-bold text-white bg-danger"
+									th:if="${#lists.contains(inscanDetailsForOperation.![ofcid], sec.id) && #lists.contains(inscanDetailsForOperation.![name], sec.fullName)}"
+									style="font-size:15px">
+									Already in Plant
+								</div>
+							</div>
+
+							<div class="count-container">
+								<h5 class="count-id" th:text="${sec.id}">ID: 123</h5>
+							</div>
+							<div class="horizontal-line"></div>
+							<div class="image-container">
+								<img src="img/Profile_Image.png" alt="Operation Cylinder Image" class="img-fluid"
+									style="max-height: 150px;" />
+								<!--    <h5 class="image-id" th:text="${operator.id}">ID: 123</h5> -->
+							</div>
+
+							<th:block th:if="${not #strings.isEmpty(sec.fullName)}">
+								<div class="operator-name mt-2" style="font-size: 12px; font-weight: bold;">
+									<label th:text="${sec.fullName}"></label>
+								</div>
+								<div class="aadhar-number" style="display: none;" th:text="${sec.aadharNumber}"></div>
+							</th:block>
+							<th:block th:if="${#strings.isEmpty(sec.fullName)}">
+								<br />
+							</th:block>
+						</div>
+						<div class="text-center">
+							<th:block th:if="${#strings.isEmpty(sec.fullName)}">
+								<a th:href="@{/secDetails(productId=${sec.id}, action=add)}" class="btn btn-primary"
+									style="width: 196px;">
+									<i class="fa fa-plus" aria-hidden="true" style="font-weight: bold;"></i> Add
+								</a>
+							</th:block>
+							<th:block th:if="${not #strings.isEmpty(sec.fullName)}">
+								<a th:href="@{/secDetails(productId=${sec.id}, action=edit)}" class="btn btn-primary"
+									style="width:196px;">
+									<i class="fa fa-edit" style="font-weight: 900;"></i> Edit
+								</a>
+							</th:block>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>
+
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+<script th:inline="javascript">
+	var secData = [];
+	var currentCount = 0;
+
+	function addSec() {
+		secData = [];
+		var secCountInput = document.getElementById('sec_count');
+		var secCount = parseInt(secCountInput.value);
+		var secFields = document.getElementById('contractor_fields');
+
+		// Validate for negative or zero values
+		if (isNaN(secCount) || secCount <= 0) {
+			alert("Please enter a valid positive number of Secs.");
+			secCountInput.value = ''; // Clear invalid input
+			return;
+		}
+
+		for (var i = 1; i <= secCount; i++) {
+			currentCount++;
+			var secText = document.createElement('p');
+			secText.textContent = currentCount;
+			secFields.appendChild(secText);
+			secData.push(currentCount);
+		}
+
+		console.log(secData);
+		submitSec(secData);
+	}
+
+	// Rest of the function remains unchanged
+	function submitSec(secData) {
+		var xhr = new XMLHttpRequest();
+		var url = '/submitSec';
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				if (xhr.status === 200) {
+					var response = JSON.parse(xhr.responseText);
+					var pop = "Add count or add Sec successfully"; // Fixed Defect 3
+					alert(pop);
+					location.reload();
+				} else {
+					var errorMessage = "Error occurred while submitting Sec data.";
+					alert(errorMessage);
+				}
+			}
+		};
+
+		xhr.send(JSON.stringify(secData));
+	}
+</script>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		let searchInput = document.getElementById("searchInput");
+
+		searchInput.addEventListener("input", function () {
+			let searchValue = this.value.trim().toLowerCase();
+			let contractorCards = document.querySelectorAll(".contractor-card");
+
+			contractorCards.forEach(card => {
+				let name = card.querySelector(".operator-name label")?.textContent.toLowerCase() || "";
+				let aadhar = card.querySelector(".aadhar-number")?.textContent.toLowerCase() || "";
+
+				if (searchValue === "" || name.includes(searchValue) || aadhar.includes(searchValue)) {
+					card.classList.remove("d-none");
+				} else {
+					card.classList.add("d-none");
+				}
+			});
+		});
+	});
+
+	document.addEventListener("keydown", function (event) {
+		if (event.ctrlKey && event.key === "f") {
+			event.preventDefault();
+			document.getElementById("searchInput").focus();
+		}
+	});
+</script>

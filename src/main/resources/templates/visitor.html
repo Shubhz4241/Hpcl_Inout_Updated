@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css}" rel="stylesheet" />
+	<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js}"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+	<title>Driver</title>
+	<link th:href="@{/styles.css}" rel="stylesheet" />
+</head>
+
+<body>
+	<section>
+		<style>
+			body {
+				font-family: 'Montserrat', sans-serif;
+			}
+
+			.image-container {
+				text-align: center;
+				position: relative;
+				width: 100%;
+				/* Ensure the container takes the full width of the card */
+				height: 100px;
+				/* Reduced from 150px to fit smaller card height */
+				overflow: hidden;
+				/* Prevent image overflow */
+				display: flex;
+				/* Added from officer.html */
+				justify-content: center;
+				/* Added from officer.html */
+				align-items: center;
+				/* Added from officer.html */
+			}
+
+			.image-container img {
+				max-width: 100%;
+				/* Ensure the image doesn't exceed the container width */
+				max-height: 100%;
+				/* Ensure the image doesn't exceed the container height */
+				width: auto;
+				/* Maintain aspect ratio */
+				height: auto;
+				/* Maintain aspect ratio */
+				object-fit: contain;
+				/* Ensure the image fits within the container without distortion */
+			}
+
+			.image-id {
+				position: absolute;
+				top: 55%;
+				/* Adjusted from officer.html */
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 5px;
+			}
+
+			/* Card layout - 5 cards per row on larger screens */
+			.row.mb-4.mt-3 {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: start;
+			}
+
+			.col-lg-2 {
+				flex: 0 0 20%;
+				/* 5 cards per row */
+				max-width: 20%;
+			}
+
+			.card {
+				width: 100%;
+				height: 100%;
+				/* Adjusted from officer.html */
+				min-height: 150px !important;
+				/* Reduced from 200px to 150px */
+				margin: 0;
+				overflow: hidden;
+				/* Added from officer.html */
+			}
+
+			.card-body {
+				padding: 10px;
+				/* Added from officer.html */
+				padding-top: 0px !important;
+			}
+
+			/* Style for buttons within the card, scoped to avoid affecting navbar or other buttons */
+			.card .btn {
+				white-space: nowrap;
+				display: block;
+				text-align: center;
+				border-radius: 0 0 4px 4px;
+				/* Match card's bottom corners */
+				width: 100% !important;
+				/* Match card width */
+				margin: 0;
+				/* No padding or margin */
+			}
+
+			/* Prevent layout shifts when popup/modal opens */
+			body.modal-open {
+				overflow-y: auto !important;
+				/* Prevent scrollbar disappearance */
+				padding-right: 0 !important;
+				/* Prevent layout shift */
+			}
+
+			.operator-name {
+				font-size: 12px;
+				font-weight: bold;
+				white-space: nowrap;
+				/* Prevent wrapping */
+				overflow: hidden;
+				/* Hide overflow */
+				text-overflow: ellipsis;
+				/* Add ellipsis for long text */
+				max-width: 100%;
+				/* Constrain width */
+				max-height: 40px;
+				/* Added from officer.html */
+				word-break: break-word;
+				/* Added from officer.html */
+			}
+
+			.text-center {
+				margin-bottom: 0;
+				/* Added from officer.html */
+			}
+
+			/* Responsive Adjustments */
+			@media (max-width: 576px) {
+
+				/* Mobile view */
+				.ms-4 {
+					margin-left: 1rem !important;
+				}
+
+				.ms-5 {
+					margin-left: 1rem !important;
+				}
+
+				.mt-4 {
+					margin-top: 1.5rem !important;
+				}
+
+				.d-flex {
+					flex-direction: column;
+					align-items: stretch;
+					gap: 10px;
+				}
+
+				#visitor_count,
+				#mysubmit,
+				#searchInput {
+					width: 100% !important;
+					margin-left: 0 !important;
+				}
+
+				#searchInput {
+					max-width: 100%;
+					/* Prevent overflow */
+				}
+
+				.col-sm-4,
+				.col-sm-1 {
+					flex: 0 0 100%;
+					max-width: 100%;
+					width: 100%;
+					/* Added from officer.html */
+					padding: 0 5px;
+					/* Added from officer.html */
+				}
+
+				.col-md-4 {
+					flex: 0 0 100%;
+					max-width: 100%;
+					margin-bottom: 10px;
+				}
+
+				.col-5 {
+					flex: 0 0 100%;
+					max-width: 100%;
+					margin-bottom: 10px;
+				}
+
+				.col-lg-2 {
+					flex: 0 0 50%;
+					/* 2 cards per row */
+					max-width: 50%;
+				}
+
+				.card .btn {
+					font-size: 14px;
+					/* Adjust font size for buttons */
+					width: 100%;
+					/* Added from officer.html */
+				}
+
+				.card {
+					height: 230px;
+					/* Reduced from 280px to fit smaller card height */
+				}
+
+				.card-body {
+					padding: 10px;
+					/* Added from officer.html */
+				}
+
+				.image-container {
+					height: 100px;
+					/* Reduced from 130px to fit smaller card height */
+				}
+
+				.image-container img {
+					max-width: 80px;
+					/* Reduced from 100px to fit smaller card height */
+				}
+
+				/* Adjust popup for mobile */
+				#managePopup {
+					width: 90% !important;
+					max-width: 300px;
+				}
+
+				/* Adjust modal for mobile */
+				.modal-dialog {
+					margin: 1rem;
+					max-width: 90%;
+				}
+			}
+
+			@media (min-width: 577px) and (max-width: 768px) {
+
+				/* Tablet view */
+				.d-flex {
+					flex-direction: row;
+					flex-wrap: wrap;
+					gap: 10px;
+				}
+
+				#visitor_count {
+					width: 40% !important;
+				}
+
+				#mysubmit {
+					width: 20% !important;
+				}
+
+				#searchInput {
+					width: 35% !important;
+					margin-left: 0 !important;
+					max-width: 100%;
+					/* Prevent overflow */
+				}
+
+				.col-md-4 {
+					flex: 0 0 50%;
+					max-width: 50%;
+					margin-bottom: 10px;
+				}
+
+				.col-5 {
+					flex: 0 0 48%;
+					max-width: 48%;
+				}
+
+				.col-lg-2 {
+					flex: 0 0 33.33%;
+					/* 3 cards per row */
+					max-width: 33.33%;
+				}
+
+				.col-sm-4,
+				.col-sm-1 {
+					padding: 0 5px;
+					/* Added from officer.html */
+				}
+
+				.card .btn {
+					font-size: 15px;
+				}
+
+				.card {
+					min-height: 170px !important;
+					/* Reduced from 220px to 170px */
+				}
+
+				.image-container {
+					height: 110px;
+					/* Reduced from 140px to fit smaller card height */
+				}
+
+				/* Adjust popup for tablet */
+				#managePopup {
+					width: 350px !important;
+				}
+			}
+
+			@media (min-width: 769px) and (max-width: 992px) {
+
+				/* Small desktop */
+				#searchInput {
+					width: 100% !important;
+					margin-left: 9rem !important;
+					max-width: 100%;
+					/* Prevent overflow */
+				}
+
+				.col-md-4 {
+					flex: 0 0 50%;
+					max-width: 50%;
+				}
+
+				.col-5 {
+					flex: 0 0 48%;
+					max-width: 48%;
+				}
+
+				.col-lg-2 {
+					flex: 0 0 25%;
+					/* 4 cards per row */
+					max-width: 25%;
+				}
+
+				.card .btn {
+					font-size: 16px;
+				}
+
+				.card {
+					height: 250px;
+					/* Reduced from 300px to fit smaller card height */
+				}
+
+				.image-container {
+					height: 120px;
+					/* Reduced from 150px to fit smaller card height */
+				}
+			}
+
+			@media (min-width: 993px) {
+
+				/* Large desktop */
+				#searchInput {
+					width: 17rem !important;
+					margin-left: 7rem !important;
+					/* Adjusted to prevent overflow */
+				}
+
+				.col-md-4 {
+					flex: 0 0 33.33%;
+					max-width: 33.33%;
+				}
+
+				.col-5 {
+					flex: 0 0 48%;
+					max-width: 48%;
+				}
+
+				.col-lg-2 {
+					flex: 0 0 20%;
+					/* 5 cards per row */
+					max-width: 20%;
+				}
+
+				.card .btn {
+					font-size: 16px;
+				}
+
+				.card {
+					height: 250px;
+					/* Reduced from 300px to fit smaller card height */
+				}
+
+				.image-container {
+					height: 120px;
+					/* Reduced from 150px to fit smaller card height */
+				}
+			}
+
+			.ms-5 {
+				margin-left: 2rem !important;
+			}
+
+			.btn-primary {
+				background-color: #0B2F8B;
+				border-color: #0B2F8B;
+			}
+
+			.btn-primary:hover {
+				background-color: #0B2F8B;
+				/* Keeps the same color on hover */
+			}
+
+			.count-container {
+				margin-bottom: 5px;
+			}
+
+			.count-container+.horizontal-line {
+				content: "";
+				display: block;
+				width: 100%;
+				height: 1px;
+				background-color: #e0e0e0;
+				margin: 0px auto 0px auto;
+				position: relative;
+			}
+
+			.card-body {
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+
+			.count-container {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.count-id {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+
+			.horizontal-line {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.image-container {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.operator-name {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.text-center {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+		</style>
+		<div class="row">
+			<label class="fs-5 w-100 mt-4 ms-5 mb-1 fw-bold">Visitor Cylinder Count</label>
+			<div class="ms-4 mb-3 d-flex">
+				<div class="col-sm-4">
+					<input type="number" name="visitor_count" id="visitor_count" class="form-control ms-1"
+						placeholder="Enter Number of Visitor" min="1" required
+						oninvalid="this.setCustomValidity('Please enter a positive number greater than 0')"
+						onchange="this.setCustomValidity('')" />
+				</div>
+				<div class="col-sm-1">
+					<input type="button" id="mysubmit" value="+ Add Visitor" class="btn btn-primary ms-5"
+						onclick="addVisitor()" required />
+				</div>
+				<div class="col-sm-4">
+					<input type="text" id="searchInput" class="form-control ms-3"
+						placeholder="Search by Name or Aadhar" />
+				</div>
+			</div>
+			<div class="row ms-5">
+
+				<!--////////////////////-->
+				<div class="col-md-4">
+					<div class="row">
+						<div class="col-5">
+							<a class="btn btn-danger form-control fs-6 mb-0">
+								Sr_no: <span id="currentSerialNumberDisplay" class="fw-bold">0</span>
+							</a>
+						</div>
+						<!-- Manage Button -->
+						<div class="col-5">
+							<button id="openmodelBtn" class="btn btn-primary form-control fs-6">
+								<span>Manage</span>
+								<i class="fa-solid fa-xs fa-gear" aria-hidden="true"></i>
+							</button>
+						</div>
+
+						<!-- Overlay Background -->
+						<div id="overlay"
+							style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;">
+						</div>
+
+						<!-- Popup Window -->
+						<div id="managePopup" class="p-4"
+							style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 10px; display: none; z-index: 1000;">
+							<div class="bg-primary text-white p-2 rounded-top">
+								<h5 class="m-0">Manage Sr No</h5>
+							</div>
+							<div class="p-3">
+								<p class="fs-5">Current Sr No: <span id="currentSrNo" class="text-danger">0</span></p>
+								<label for="setSrNo" class="form-label">Set Sr No:</label>
+								<input type="number" id="setSrNo" class="form-control" placeholder="Enter Sr No">
+							</div>
+							<div class="p-3 d-flex justify-content-end">
+								<button class="btn btn-secondary me-2" id="closePopup">Close</button>
+								<button class="btn btn-primary" id="saveChanges">Save Changes</button>
+							</div>
+						</div>
+
+						<script>
+							document.addEventListener("DOMContentLoaded", function () {
+								// Load current serial number on page load
+								loadCurrentSerialNumber();
+
+								// Open Popup
+								$("#openmodelBtn").click(function () {
+									$("#managePopup, #overlay").fadeIn();
+								});
+
+								// Close Popup
+								$("#closePopup, #overlay").click(function () {
+									$("#managePopup, #overlay").fadeOut();
+								});
+
+								// Save Changes
+								$("#saveChanges").click(function () {
+									let newSrNo = $("#setSrNo").val();
+									if (newSrNo) {
+										updateSerialNumber(newSrNo);
+									}
+								});
+							});
+
+							function loadCurrentSerialNumber() {
+								fetch('/manageSrNo')
+									.then(response => response.json())
+									.then(data => {
+										$("#currentSerialNumberDisplay").text(data.currentSrNo || 0);
+										$("#currentSrNo").text(data.currentSrNo || 0);
+										$("#setSrNo").val(data.currentSrNo || 0);
+									})
+									.catch(error => {
+										console.error("Error loading serial number:", error);
+									});
+							}
+
+							function updateSerialNumber(newSrNo) {
+								$("#loadingIndicator").show();
+								fetch('/updateSrNo', {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/x-www-form-urlencoded',
+									},
+									body: `newSrNo=${newSrNo}`
+								})
+									.then(response => response.json())
+									.then(data => {
+										if (data.success) {
+											$("#currentSerialNumberDisplay").text(newSrNo);
+											$("#managePopup, #overlay").fadeOut();
+										}
+									})
+									.catch(error => {
+										console.error("Error updating serial number:", error);
+									})
+									.finally(() => {
+										$("#loadingIndicator").hide();
+									});
+							}
+
+							// Update your existing addVisitor function
+							function addVisitor() {
+								var visitorCount = parseInt(document.getElementById('visitor_count').value);
+								if (isNaN(visitorCount) || visitorCount < 1) {
+									alert("Please enter a valid number of visitors");
+									return;
+								}
+
+								var currentSerial = parseInt($("#currentSerialNumberDisplay").text()) || 0;
+								visitorData = [];
+								var visitorFields = document.getElementById('visitor_fields');
+								visitorFields.innerHTML = '';
+
+								for (var i = 1; i <= visitorCount; i++) {
+									currentSerial++;
+									var visitorText = document.createElement('p');
+									visitorText.textContent = currentSerial;
+									visitorFields.appendChild(visitorText);
+									visitorData.push(currentSerial);
+								}
+
+								$("#currentSerialNumberDisplay").text(currentSerial);
+								submitVisitor(visitorData);
+							}
+
+							// Update your existing submitVisitor function
+							function submitVisitor(visitorData) {
+								$("#loadingIndicator").show();
+								var xhr = new XMLHttpRequest();
+								var url = '/submitVisitor';
+								xhr.open('POST', url, true);
+								xhr.setRequestHeader('Content-Type', 'application/json');
+
+								xhr.onreadystatechange = function () {
+									if (xhr.readyState === 4) {
+										$("#loadingIndicator").hide();
+										if (xhr.status === 200) {
+											var response = JSON.parse(xhr.responseText);
+											alert("Success");
+											location.reload();
+										} else {
+											alert("Error occurred while submitting data.");
+										}
+									}
+								};
+
+								xhr.send(JSON.stringify({
+									visitors: visitorData,
+									currentSerial: visitorData[visitorData.length - 1] || 0
+								}));
+							}
+
+							// Inside your existing script tag in the HTML
+							$("#saveChanges").click(function () {
+								let newSrNo = $("#setSrNo").val();
+								if (!newSrNo || isNaN(newSrNo)) {
+									$("#setSrNo").addClass("is-invalid");
+									return;
+								}
+
+								$("#setSrNo").removeClass("is-invalid");
+								updateSerialNumber(parseInt(newSrNo));
+							});
+
+
+						</script>
+
+					</div>
+				</div>
+
+				<!--////////////////////-->
+				<!-- Button to Trigger Modal -->
+				<div class="col-md-4">
+					<div class="row">
+						<button type="button" class="btn btn-primary form-control fs-6" data-bs-toggle="modal"
+							data-bs-target="#searchGatePassModal1">
+							Search Gate Pass
+						</button>
+					</div>
+				</div>
+
+				<!-- Modal for Search Gate Pass -->
+				<div class="modal fade" id="searchGatePassModal1" tabindex="-1"
+					aria-labelledby="searchGatePassModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="searchGatePassModalLabel">Search Gate Pass</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<!-- Form to Enter Token Number -->
+								<form th:action="@{/searchGatePass}" method="get">
+									<div class="mb-3">
+										<label for="id" class="form-label">Enter Gate Pass ID</label>
+										<input type="number" class="form-control" id="id" name="id" required>
+									</div>
+									<button type="submit" class="btn btn-primary">Search</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="visitor_fields" class="mt-3 ms-3" style="display: none;"></div>
+		</div>
+		<div class="row mb-4 mt-3 mx-auto ms-4">
+			<div th:each="visitor : ${visitorDetails}" class="col-lg-2 col-md-3 col-sm-6 mb-3">
+				<div class="card shadow mb-4 ms-2 d-flex flex-column">
+					<div class="card-body text-center"
+						style="flex-grow: 1; flex-direction: column; align-items: center; justify-content: space-between;">
+						<div class="badge-container">
+							<div class="badge badge-danger my-1 rounded text-center font-weight-bold text-white bg-danger"
+								th:if="${#lists.contains(inscanDetailsForVisitor.![ofcid], visitor.id) && #lists.contains(inscanDetailsForVisitor.![name], visitor.fullName)}"
+								style="font-size:15px">
+								Already in Plant
+							</div>
+						</div>
+
+						<div class="count-container">
+							<h5 class="count-id" th:text="${visitor.id}">ID: 123</h5>
+						</div>
+						<div class="horizontal-line"></div>
+						<div class="image-container">
+							<img src="img/returning-visitor 1 (1).png" alt="Dacked Cylinder Image" class="img-fluid"
+								style="max-height: 100px;" /> <!-- Reduced from 150px -->
+							<!--	<h5 class="image-id" th:text="${operator.id}">ID: 123</h5> -->
+						</div>
+
+						<!-- Operator Name -->
+						<th:block th:if="${not #strings.isEmpty(visitor.fullName)}">
+							<div class="operator-name" style="font-size: 12px; font-weight: bold;">
+								<label th:text="${visitor.fullName}"></label>
+							</div>
+							<div class="aadhar-number" style="display: none;" th:text="${visitor.aadharNumber}"></div>
+						</th:block>
+					</div>
+					<div class="text-center">
+						<!-- Add or Edit Buttons -->
+						<th:block th:if="${#strings.isEmpty(visitor.fullName)}">
+							<a th:href="@{/visitorDetails(visitorId=${visitor.id}, action=add)}" class="btn btn-primary"
+								style="width: 146px;">
+								<i class="fa fa-plus" aria-hidden="true" style="font-weight: bold;"></i> Add
+							</a>
+						</th:block>
+						<th:block th:if="${not #strings.isEmpty(visitor.fullName)}">
+							<a th:href="@{/visitorDetails(visitorId=${visitor.id}, action=edit)}"
+								class="btn btn-primary" style="width:146px;">
+								<i class="fa fa-edit" style="font-weight: 900;"></i> Edit
+							</a>
+						</th:block>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>
+
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+<script th:inline="javascript">
+	var visitorData = [];
+	var currentCount = 0;
+
+	function addVisitor() {
+		visitorData = [];
+		var visitorCount = parseInt(document.getElementById('visitor_count').value);
+		var visitorFields = document.getElementById('visitor_fields');
+
+		// Add validation for invalid data (0 or negative values)
+		if (isNaN(visitorCount) || visitorCount <= 0) {
+			alert("Please enter a valid number greater than 0.");
+			return; // Stop execution if the input is invalid
+		}
+
+		for (var i = 1; i <= visitorCount; i++) {
+			currentCount++;
+			var visitorText = document.createElement('p');
+			visitorText.textContent = currentCount;
+			visitorFields.appendChild(visitorText);
+			visitorData.push(currentCount);
+		}
+
+		console.log(visitorData);
+		submitVisitor(visitorData);
+	}
+
+	function submitVisitor(visitorData) {
+		var xhr = new XMLHttpRequest();
+		var url = '/submitVisitor';
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				if (xhr.status === 200) {
+					var response = JSON.parse(xhr.responseText);
+					var pop = "Add count or add Visitor successfully"; // Fixed Defect 2
+					alert(pop);
+					location.reload();
+					setTimeout(function () {
+						location.reload();
+					}, 1000);
+				} else {
+					var errorMessage = "Error occurred while submitting Sec data.";
+					alert(errorMessage);
+				}
+			}
+		};
+
+		xhr.send(JSON.stringify(visitorData));
+	}
+</script>
+<!-- Bootstrap JavaScript & Popper.js (Include this in your HTML before closing </body>) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		let searchInput = document.getElementById("searchInput");
+
+		searchInput.addEventListener("input", function () {
+			let searchValue = this.value.trim().toLowerCase();
+			console.log(searchValue);
+			let contractorCards = document.querySelectorAll(".col-lg-2"); // Cards of workmen
+
+			contractorCards.forEach(card => {
+				let name = card.querySelector(".operator-name label")?.textContent.toLowerCase() || "";
+				let aadhar = card.querySelector(".aadhar-number")?.textContent.toLowerCase() || ""; // Get Aadhar number
+
+				if (name.includes(searchValue) || aadhar.includes(searchValue)) {
+					card.style.display = "block"; // Show matching card
+				} else {
+					card.style.display = "none"; // Hide non-matching cards
+				}
+			});
+		});
+	});
+
+	document.addEventListener("keydown", function (event) {
+		if (event.ctrlKey && event.key === "f") {
+			event.preventDefault();
+			document.getElementById("searchInput").focus();
+		}
+	});
+</script>

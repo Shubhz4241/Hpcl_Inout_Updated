@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css}" rel="stylesheet" />
+	<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js}"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+	<title>Gat Creator</title>
+	<link th:href="@{/styles.css}" rel="stylesheet" />
+</head>
+
+<body>
+	<section>
+		<style>
+			body {
+				font-family: 'Montserrat', sans-serif;
+			}
+
+			.image-container {
+				text-align: center;
+				position: relative;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.image-id {
+				position: absolute;
+				top: 55%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 5px;
+				font-size: clamp(14px, 2vw, 18px);
+				font-weight: bold;
+				color: black;
+				background: none;
+				padding: 3px 8px;
+			}
+
+			#searchInput {
+				width: 100%;
+				box-sizing: border-box;
+			}
+
+			.card {
+				height: 100%;
+				min-height: 200px !important;
+				/* Matched from reference */
+				overflow: hidden;
+				/* Matched from reference */
+			}
+
+			.card-body {
+				padding: 10px;
+				/* Matched from reference */
+				padding-top: 0px !important;
+				/* Matched from reference */
+				padding-left: 0 !important;
+				/* Matched from reference */
+				padding-right: 0 !important;
+				/* Matched from reference */
+				flex-grow: 1;
+				flex-direction: column;
+				justify-content: space-between;
+				min-height: 150px;
+				align-items: center;
+				height: 150px;
+				/* Kept from original */
+				overflow: hidden;
+				/* Kept from original */
+			}
+
+			.btn-primary {
+				width: 100% !important;
+				border-radius: 0 0 4px 4px !important;
+				margin: 0;
+				font-size: clamp(14px, 2vw, 16px);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 5px;
+				background-color: #0B2F8B;
+				/* Matched from reference */
+				border-color: #0B2F8B;
+				/* Matched from reference */
+			}
+
+			.btn-primary:hover {
+				background-color: #0B2F8B;
+				/* Matched from reference */
+			}
+
+			.operator-name {
+				font-size: 12px;
+				font-weight: bold;
+				word-break: break-word;
+				max-height: 40px;
+				/* Matched from reference */
+				overflow: hidden;
+				/* Matched from reference */
+				text-overflow: ellipsis;
+				/* Matched from reference */
+				white-space: nowrap;
+				/* Matched from reference */
+				margin-left: 0 !important;
+				/* Matched from reference */
+				margin-right: 0 !important;
+				/* Matched from reference */
+			}
+
+			.text-center {
+				margin-bottom: 0 !important;
+				/* Kept from original */
+				margin-left: 0 !important;
+				/* Matched from reference */
+				margin-right: 0 !important;
+				/* Matched from reference */
+			}
+
+			.mt-5.mb-5.d-flex {
+				flex-wrap: wrap;
+				gap: 10px;
+				align-items: center;
+			}
+
+			@media (max-width: 576px) {
+				#searchInput {
+					margin-left: 0 !important;
+					width: 100% !important;
+					max-width: 100%;
+				}
+
+				.mt-5.mb-5.d-flex {
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.col-sm-3,
+				.col-sm-4,
+				.col-sm-1 {
+					width: 100%;
+					max-width: 100%;
+					margin-left: 0 !important;
+					padding: 0 5px;
+				}
+
+				.btn-primary.ms-5 {
+					margin-left: 0 !important;
+					width: 100% !important;
+					max-width: 100%;
+				}
+
+				.form-control.ms-3 {
+					margin-left: 0 !important;
+				}
+
+				.card-body {
+					padding: 10px ! important;
+					/* Matched from reference */
+				}
+
+				.image-container img {
+					max-width: 100px;
+				}
+
+				.col-lg-2 {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+
+				.col-md-3 {
+					flex: 0 0 50%;
+					max-width: 50%;
+				}
+
+				.col-sm-6 {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+
+				.card.mb-4.ms-2 {
+					margin-left: 0 !important;
+					margin-bottom: 1rem !important;
+				}
+
+				.btn-primary {
+					font-size: 14px;
+				}
+			}
+
+			@media (min-width: 577px) and (max-width: 768px) {
+				#searchInput {
+					margin-left: 0 !important;
+					width: 100%;
+				}
+
+				.col-sm-3,
+				.col-sm-4,
+				.col-sm-1 {
+					padding: 0 5px;
+					max-width: 100%;
+				}
+
+				.btn-primary.ms-5 {
+					margin-left: 0 !important;
+					width: 100% !important;
+				}
+
+				.form-control.ms-3 {
+					margin-left: 0 !important;
+				}
+
+				.card {
+					min-height: 220px !important;
+					/* Matched from reference */
+				}
+
+				.mt-5.mb-5.d-flex {
+					margin-top: 2rem !important;
+					margin-bottom: 2rem !important;
+				}
+			}
+
+			@media (min-width: 769px) {
+				#searchInput {
+					margin-left: 12rem !important;
+					width: 100%;
+				}
+
+				.col-sm-3,
+				.col-sm-4,
+				.col-sm-1 {
+					max-width: 100%;
+				}
+			}
+
+			@media (min-width: 576px) {
+				.col-sm-1 {
+					flex: 0 0 auto;
+					width: 13.333333%;
+				}
+			}
+
+			.count-container {
+				margin-bottom: 5px;
+				/* Matched from reference */
+				margin-left: 0 !important;
+				/* Matched from reference */
+				margin-right: 0 !important;
+				/* Matched from reference */
+			}
+
+			.count-container+.horizontal-line {
+				content: "";
+				display: block;
+				width: 100%;
+				height: 1px;
+				background-color: #e0e0e0;
+				margin: 0px auto 0px auto;
+				position: relative;
+				margin-left: 0 !important;
+				/* Matched from reference */
+				margin-right: 0 !important;
+				/* Matched from reference */
+			}
+
+			.count-id {
+				margin-left: 0 !important;
+				/* Matched from reference */
+				margin-right: 0 !important;
+				/* Matched from reference */
+				padding-left: 0 !important;
+				/* Matched from reference */
+				padding-right: 0 !important;
+				/* Matched from reference */
+			}
+
+			.horizontal-line {
+				margin-left: 0 !important;
+				/* Matched from reference */
+				margin-right: 0 !important;
+				/* Matched from reference */
+			}
+
+			h5 {
+				margin-top: 0;
+				margin-bottom: .5rem;
+				font-weight: 500;
+				line-height: 1.2;
+			}
+		</style>
+
+		<div class="container mt-3 px-2 px-md-3">
+			<div th:if="${successMessage}" class="alert alert-success" id="successMessage">
+				<p th:text="${successMessage}"></p>
+			</div>
+			<div th:if="${errorMessage}" class="alert alert-danger" id="errorMessage">
+				<p th:text="${errorMessage}"></p>
+			</div>
+
+			<script th:inline="javascript">
+				/*<![CDATA[*/
+				(function () {
+					var successMessage = document.getElementById('successMessage');
+					var errorMessage = document.getElementById('errorMessage');
+
+					var isBackNavigation = (window.performance &&
+						(performance.navigation.type === 2 ||
+							(performance.getEntriesByType("navigation")[0] &&
+								performance.getEntriesByType("navigation")[0].type === "back_forward")));
+
+					// Ensure message is hidden on back navigation
+					if (isBackNavigation) {
+						if (successMessage) successMessage.style.display = 'none';
+						if (errorMessage) errorMessage.style.display = 'none';
+					} else {
+						setTimeout(function () {
+							if (successMessage) successMessage.style.display = 'none';
+							if (errorMessage) errorMessage.style.display = 'none';
+						}, 5000);
+					}
+
+					// Add event listener to clear message on manual back button press
+					window.onpageshow = function (event) {
+						if (event.persisted || (window.performance && performance.navigation.type === 2)) {
+							if (successMessage) successMessage.style.display = 'none';
+							if (errorMessage) errorMessage.style.display = 'none';
+						}
+					};
+				})();
+    /*]]>*/
+			</script>
+
+			<div class="row justify-content-center">
+				<div class="mt-3 mb-3 d-flex">
+					<div class="col-sm-3">
+						<input type="number" name="gat_count" id="gat_count" class="form-control ms-3"
+							placeholder="Enter Number of Gat" required />
+					</div>
+					<div class="col-sm-1">
+						<input type="button" id="mysubmit" value="Add Gats" class="btn btn-primary ms-5"
+							th:onclick="addGats()" required />
+					</div>
+					<div class="col-sm-4">
+						<input type="text" id="searchInput" class="form-control ms-3"
+							placeholder="Search by Name or Aadhar" />
+					</div>
+				</div>
+				<div id="gat_fields" class="mt-3 ms-3 w-100" style="display: none;"></div>
+			</div>
+
+			<div class="row mb-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
+				<div th:each="gat : ${gatDetails}" class="col">
+					<div class="card mb-4 ms-2 d-flex flex-column shadow-sm">
+						<div class="card-body text-center"
+							style="flex-grow: 1; min-height: 190px; flex-direction: column; align-items: center; justify-content: space-between;">
+							<div class="badge-container" style="margin-bottom: 10px;">
+								<div class="badge badge-danger my-1 rounded text-center font-weight-bold text-white bg-danger"
+									th:if="${#lists.contains(inscanDetailsForOperation.![ofcid], gat.id) && #lists.contains(inscanDetailsForOperation.![name], gat.fullName)}"
+									style="font-size:15px">
+									Already in Plant
+								</div>
+							</div>
+							<div class="count-container">
+								<h5 class="count-id" th:text="${gat.id}">ID: 123</h5>
+							</div>
+							<div class="horizontal-line"></div>
+							<div class="image-container">
+								<img src="img/Profile_Image.png" alt="Operation Cylinder Image" class="img-fluid"
+									style="max-height: 140px;" />
+								<!--	<h5 class="image-id" th:text="${gat.id}">ID: 123</h5>-->
+							</div>
+
+							<th:block th:if="${not #strings.isEmpty(gat.fullName)}">
+								<div class="operator-name mt-2">
+									<label th:text="${gat.fullName}"></label>
+								</div>
+								<div class="aadhar-number" style="display: none;" th:text="${gat.aadharNumber}"></div>
+							</th:block>
+							<th:block th:if="${#strings.isEmpty(gat.fullName)}">
+								<br />
+							</th:block>
+						</div>
+						<div class="text-center">
+							<th:block th:if="${#strings.isEmpty(gat.fullName)}">
+								<a th:href="@{/gatDetails(productId=${gat.id}, action=add)}" class="btn btn-primary">
+									<i class="fa fa-plus" aria-hidden="true" style="font-weight: bold;"></i> Add
+								</a>
+							</th:block>
+							<th:block th:if="${not #strings.isEmpty(gat.fullName)}">
+								<a th:href="@{/gatDetails(productId=${gat.id}, action=edit)}" class="btn btn-primary">
+									<i class="fa fa-edit" style="font-weight: 900;"></i> Edit
+								</a>
+							</th:block>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>
+
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+<script th:inline="javascript">
+	var gatData = [];
+	var currentCount = 0;
+
+	function addGats() {
+		operatorData = [];
+		var gatCount = parseInt(document.getElementById('gat_count').value);
+		var gatFields = document.getElementById('gat_fields');
+
+		// Added validation for empty or negative values
+		if (isNaN(gatCount) || gatCount <= 0) {
+			alert("Please enter a valid positive number.");
+			return;
+		}
+
+		for (var i = 1; i <= gatCount; i++) {
+			currentCount++;
+			var gatText = document.createElement('p');
+			gatText.textContent = currentCount;
+			gatFields.appendChild(gatText);
+			gatData.push(currentCount);
+		}
+
+		console.log(gatData);
+		submitGat(gatData);
+	}
+
+	function submitGat(gatData) {
+		var xhr = new XMLHttpRequest();
+		var url = '/submitGats';
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				console.log(xhr.status);
+				if (xhr.status === 200) {
+					var response = JSON.parse(xhr.responseText);
+					var pop = "Add count or add Gat successfully"; // Updated message
+					alert(pop);
+					location.reload();
+
+					setTimeout(function () {
+						location.reload();
+					}, 1000);
+				}
+			}
+		};
+
+		xhr.send(JSON.stringify(gatData));
+	}
+</script>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		let searchInput = document.getElementById("searchInput");
+
+		searchInput.addEventListener("input", function () {
+			let searchValue = this.value.trim().toLowerCase();
+			console.log(searchValue);
+			let contractorCards = document.querySelectorAll(".col");
+
+			contractorCards.forEach(card => {
+				let name = card.querySelector(".operator-name label")?.textContent.toLowerCase() || "";
+				let aadhar = card.querySelector(".aadhar-number")?.textContent.toLowerCase() || "";
+
+				if (name.includes(searchValue) || aadhar.includes(searchValue)) {
+					card.style.display = "block";
+				} else {
+					card.style.display = "none";
+				}
+			});
+		});
+	});
+
+	document.addEventListener("keydown", function (event) {
+		if (event.ctrlKey && event.key === "f") {
+			event.preventDefault();
+			document.getElementById("searchInput").focus();
+		}
+	});
+</script>

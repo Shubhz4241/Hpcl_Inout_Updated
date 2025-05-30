@@ -1,0 +1,384 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Insert title here</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+	<style>
+		/* Ensure form container is centered, visible, and responsive */
+		body {
+			font-family: 'Montserrat', sans-serif;
+		}
+
+		.form-container {
+			background-color: #FDF9FD;
+			border: 1px solid #ddd;
+			padding: 20px;
+			margin: 20px auto;
+			width: 100%;
+			max-width: 100%;
+			box-sizing: border-box;
+			position: relative;
+			z-index: 1;
+			/* Ensure form is above other elements */
+			overflow-x: hidden;
+			/* Prevent horizontal scrolling in form */
+		}
+
+		/* Center the Generate Report button */
+		.generate-report-container {
+			display: flex;
+			justify-content: center;
+			margin-top: 20px;
+		}
+
+		/* Ensure form inputs are fully visible and responsive */
+		.form-container .row>div {
+			padding: 0 10px;
+			/* Add padding to prevent input fields from touching edges */
+		}
+
+		.form-container .form-control,
+		.form-container .form-label {
+			width: 100%;
+			box-sizing: border-box;
+		}
+
+		/* Adjust form for all screen sizes */
+		@media (max-width: 1200px) {
+			.form-container {
+				padding: 15px;
+				margin: 15px 10px;
+			}
+
+			.form-container .row>div {
+				margin-bottom: 15px;
+			}
+
+			.form-control,
+			.form-label {
+				margin-left: 0 !important;
+			}
+
+			.btn-primary {
+				width: 100%;
+				margin-left: 0 !important;
+			}
+
+			section {
+				padding: 10px;
+				min-height: auto;
+			}
+		}
+
+		/* Specific adjustments for 1082px and below */
+		@media (max-width: 1082px) {
+			.form-container {
+				margin: 20px 5px;
+				/* Tighter margins to ensure visibility */
+				padding: 10px;
+			}
+
+			.form-container .row>div {
+				flex: 0 0 100%;
+				/* Stack fields vertically */
+				max-width: 100%;
+			}
+		}
+
+		/* Ensure table is scrollable on small screens */
+		@media (max-width: 576px) {
+			.table-responsive {
+				overflow-x: auto;
+				/* Horizontal scrollbar for table only */
+			}
+
+			.table th,
+			.table td {
+				white-space: nowrap;
+				font-size: 0.85rem;
+				/* Slightly smaller font for better fit */
+			}
+
+			.mt-3 .btn {
+				width: 100%;
+				margin-bottom: 10px;
+			}
+
+			.form-container {
+				margin: 20px 5px;
+				padding: 10px;
+			}
+
+			.form-container .row>div {
+				padding: 0 5px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<section>
+		<div id="content" class="container justify-content-center">
+
+		</div>
+		<script>
+			function toggleNotificationMenu() {
+				var notificationMenu = document.getElementById("notification-menu");
+				notificationMenu.classList.toggle("show");
+			}
+		</script>
+		<br>
+		<div style="background-color: #FDF9FD;border: 1px solid #ddd; padding: 30px;" class="form-container">
+			<form action="/generatereport" method="post" onsubmit="return validateForm()">
+				<div class="row">
+					<div class="col-lg-3 col-md-6">
+						<div class="mb-2">
+							<label for="from_date" class="form-label ms-2">From</label>
+							<input type="date" class="form-control ms-2" id="from_date" name="from_date">
+						</div>
+					</div>
+
+					<div class="col-lg-3 col-md-6">
+						<div class="mb-2">
+							<label for="to_date" class="form-label ms-2">To</label>
+							<input type="date" class="form-control ms-2" id="to_date" name="to_date">
+						</div>
+					</div>
+
+					<div class="col-lg-3 col-md-12">
+						<div class="mb-2">
+							<label for="department" class="form-label ms-2">Department</label>
+							<select name="department" id="department" class="form-control ms-2"
+								onchange="showSubDepartment()">
+								<option value="All">All</option>
+								<option value="operation">Operation</option>
+								<option value="driver">Driver</option>
+								<option value="project">Project</option>
+								<option value="visitor">Visitor</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-lg-3 col-md-12" id="subDepartmentDiv">
+						<div class="mb-2">
+							<label for="subDepartment" class="form-label ms-2">Sub-Department</label>
+							<select name="sub_department" id="subDepartment" class="form-control ms-2">
+								<option value="All">All</option>
+								<!-- Add your sub-department options here -->
+							</select>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-18">
+						<div class="mb-2">
+							<label for="product" class="form-label ms-2">Search By Name</label>
+							<select name="name" id="whom" class="form-control" required>
+								<option value="All">All</option>
+								<option th:each="officer : ${OfficerDetails}" th:value="${officer}"
+									th:text="${officer}">
+								</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-18">
+						<div class="mb-2">
+							<label for="product" class="form-label ms-2">Gate</label>
+							<select name="gate" id="product" class="form-control ms-2">
+								<option value="All">All</option>
+								<option value="maingate">Main Gate</option>
+								<option value="licensegate">License Gate</option>
+								<!--		                  <option value="drivergate">driver Gate</option> -->
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row generate-report-container">
+					<div class="col-12 d-flex justify-content-center">
+						<button type="submit" class="btn btn-primary"
+							style="background-color: #0B2F8B; margin-top: 20px;">Generate
+							Report</button>
+					</div>
+				</div>
+
+			</form>
+
+		</div>
+		<div class="container mt-3 text-center">
+			<h2>Report Data - <span th:text="${gateName}"></span></h2>
+			<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<!-- <thead>
+        <tr>
+            <th>Date IN</th>
+            <th>Date OUT</th>
+            <th>Ofcid</th>
+            <th>Department</th>
+            <th>Sub-Department</th>
+            <th>Name</th>
+            <th>Aadhar Number</th>
+            <th>Mobile</th>
+            <th>Address</th>
+            
+             Add more columns if needed 
+        </tr>
+        </thead>
+        <tbody>
+         Iterate over the reportData and populate the table rows 
+        <tr th:each="inscan : ${reportData}">
+            <td th:text="${inscan.entryDateTime}"></td>
+            <td th:text="${inscan.exitDateTime}"></td>
+            <td th:text="${inscan.ofcid}"></td>
+            <td th:text="${inscan.department}"></td>
+            <td th:text="${inscan.sub_department}"></td>
+            <td th:text="${inscan.name}"></td>
+            <td th:text="${inscan.aadharNumber}"></td>
+            <td th:text="${inscan.mobile}"></td>
+            <td th:text="${inscan.address}"></td>
+           
+             Add more columns if needed -->
+					<thead>
+						<tr>
+							<th>Entry Date Time</th>
+							<th>Exit Date Time</th>
+							<th>OFCID</th>
+							<th>Department</th>
+							<th>Sub-Department</th>
+							<th>Name</th>
+							<th>Aadhar Number</th>
+							<th>Mobile</th>
+							<th>Address</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="inscan : ${reportData}">
+							<td th:text="${inscan.entryDateTime}"></td>
+							<td th:text="${inscan.exitDateTime}"></td>
+							<td th:text="${inscan.ofcid}"></td>
+							<td th:text="${inscan.department}"></td>
+							<td th:text="${inscan.subDepartment}"></td>
+							<td th:text="${inscan.name}"></td>
+							<td th:text="${inscan.aadharNumber}"></td>
+							<td th:text="${inscan.mobile}"></td>
+							<td th:text="${inscan.address}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="mt-3">
+					<button onclick="window.print()" class="btn btn-secondary">Print</button>
+					<button onclick="exportToExcel()" class="btn btn-success">Export to Excel</button>
+				</div>
+			</div>
+	</section>
+</body>
+
+</html>
+<script>
+	function validateForm() {
+		// Validate From Date and To Date
+		var fromDate = document.getElementById("from_date").value;
+		var toDate = document.getElementById("to_date").value;
+
+		if (fromDate === "" || toDate === "") {
+			alert("Please select both From and To dates.");
+			return false;
+		}
+
+		// Convert date strings to Date objects for comparison
+		var fromDateObj = new Date(fromDate);
+		var toDateObj = new Date(toDate);
+
+		if (fromDateObj > toDateObj) {
+			alert("To date must be greater than or equal to From date.");
+			return false;
+		}
+
+		// No need to validate the Product field if "All" is allowed
+		// If not, you can add a check here to ensure a valid selection.
+
+		return true; // Form will be submitted if validation passes
+	}
+	////////////////////////////////////////////////////////////////////////////////////
+	function showSubDepartment() {
+		var department = document.getElementById("department").value;
+		var subDepartmentDiv = document.getElementById("subDepartmentDiv");
+		var subDepartmentSelect = document.getElementById("subDepartment");
+
+		// Hide sub-department div by default
+		subDepartmentDiv.style.display = "none";
+
+		// Clear previous sub-department options
+		subDepartmentSelect.innerHTML = '<option value="All">All</option>';
+
+		// Check if the selected department requires showing the sub-department
+		if (department === "operation") {
+			// Show sub-department for operation
+			subDepartmentDiv.style.display = "block";
+			addOptions(subDepartmentSelect, [
+				{label: "Officer", value: "OFC"},
+				{label: "Employee", value: "EMP"},
+				{label: "Contractor", value: "CON"},
+				{label: "Gat", value: "GAT"},
+				{label: "Tat", value: "TAT"},
+				{label: "Feg", value: "FEG"},
+				{label: "Sec", value: "SEC"}
+			]);
+		} else if (department === "driver") {
+			// Show sub-department for driver
+			subDepartmentDiv.style.display = "block";
+			addOptions(subDepartmentSelect, [
+				{label: "Packed", value: "PT"},
+				{label: "Bulk", value: "BK"},
+				{label: "Transport", value: "TR"}
+			]);
+		} else if (department === "project") {
+			// Show sub-department for project
+			subDepartmentDiv.style.display = "block";
+			addOptions(subDepartmentSelect, [
+				{label: "Workman", value: "PW"},
+				{label: "AMC", value: "AMC"}
+			]);
+		} else if (department === "visitor") {
+			// Show sub-department for visitor
+			subDepartmentDiv.style.display = "block";
+			addOptions(subDepartmentSelect, [
+				{label: "Visitor", value: "visitor"}
+			]);
+		}
+	}
+
+	function addOptions(selectElement, options) {
+		options.forEach(function (option) {
+			var optionElement = document.createElement("option");
+			optionElement.value = option.value;
+			optionElement.text = option.label;
+			selectElement.add(optionElement);
+		});
+	}
+
+
+</script>
+<script>
+	function exportToExcel() {
+		var table = document.querySelector("table");
+		var rows = [];
+		for (var i = 0, row; row = table.rows[i]; i++) {
+			var cols = [];
+			for (var j = 0, col; col = row.cells[j]; j++) {
+				cols.push(col.innerText);
+			}
+			rows.push(cols);
+		}
+		var csv = rows.map(row => row.join(",")).join("\n");
+		var blob = new Blob([csv], {type: "text/csv"});
+		var link = document.createElement("a");
+		link.href = URL.createObjectURL(blob);
+		link.download = "report.csv";
+		link.click();
+	}
+</script>

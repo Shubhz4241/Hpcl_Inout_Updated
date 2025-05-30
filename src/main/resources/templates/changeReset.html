@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Change Reset</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Responsive styles */
+        body {
+			font-family: 'Montserrat', sans-serif;
+
+		}
+        @media (max-width: 964px) {
+            .nav-tabs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-tabs a {
+                padding: 10px 20px;
+                border-radius: 5px;
+                margin-bottom: 5px;
+                border: 1px solid #e0e0e0;
+                border-bottom: none;
+            }
+            .nav-tabs a:last-child {
+                border-radius: 0 0 5px 5px;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 10px 0;
+            }
+            .form-row div {
+                max-width: 100%;
+                margin: 10px 0;
+                padding: 0 10px;
+            }
+            .form-row input {
+                padding: 10px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .submit-btn {
+                margin-top: 10px;
+            }
+        }
+        /* Base styles for form inputs */
+        .form-row input {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            width: 270px;
+            box-sizing: border-box;
+        }
+        .form-row div {
+            max-width: 33.33%;
+            margin: 0 10px;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <section style="display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; background-color: #f0f8ff; min-height: 100vh;">
+        <!-- Content Section with Horizontal Navigation -->
+        <div style="flex: 1; min-width: 0; background-color: #fff; border: 1px solid #e0e0e0; border-radius: 5px; padding: 20px;">
+            <form action="/resetpassword" method="post" style="flex-wrap: wrap; justify-content: center; background-color: #FDF9FD; border-radius: 10px; padding: 0; border: 1px solid #ddd; padding-top: 20px;" th:action="@{/resetpassword}" th:object="${passwordResetEntity}">
+                <h2 style="font-size: 24px; color: #333; text-align: center; margin-bottom: 10px;"><i class="fas fa-sync"></i> Reset</h2>
+                <div class="nav-tabs" style="display: flex; justify-content: center; margin-bottom: 10px; width: 100%; border-bottom: 1px solid #e0e0e0;">
+                    <a href="setting" style="text-decoration: none; color: #000; padding: 10px 40px; background-color: #fff; border: 1px solid #e0e0e0; border-radius: 5px 0 0 0; flex: 1; text-align: center; border-bottom: none;">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a href="access" style="text-decoration: none; color: #000; padding: 10px 40px; background-color: #fff; border: 1px solid #e0e0e0; border-left: none; border-bottom: none; flex: 1; text-align: center;">
+                        <i class="fas fa-key"></i> Access
+                    </a>
+                    <a href="changeReset" style="text-decoration: none; color: #fff; padding: 10px 40px; background-color: #0B2F8B; border: 1px solid #e0e0e0; border-left: none; border-radius: 0 5px 0 0; border-bottom: none; flex: 1; text-align: center;">
+                        <i class="fas fa-sync"></i> Change Reset
+                    </a>
+                </div>
+                <div>
+                    <div class="form-row" style="display: flex; justify-content: center; align-items: flex-start; margin-bottom: 20px; width: 100%; padding: 20px 0;">
+                        <div>
+                            <label style="font-size: 14px; color: #333; display: block; margin-bottom: 5px; text-align: start;">Reset Password</label>
+                            <input type="text" name="resetPassword" value="sdfghjk" class="form-control resetPasswordClass" th:field="*{resetPassword}" placeholder="Reset Password.." required>
+                            <p id="validation_resetPassword" style="color:red"></p>
+                        </div>
+                    </div>
+                    <div class="submit-btn" style="max-width: 100px; margin: 0 auto; padding: 0 10px; margin-bottom: 10px; text-align: center;">
+                        <button type="submit" style="background-color: #157206; border: none; border-radius: 5px; padding: 8px; font-size: 14px; width: 100%; color: #fff;">
+                            <i class="fas fa-check"></i> Change
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <script>
+        setTimeout(function () {
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }, 3000);
+        document.addEventListener('DOMContentLoaded', function () {
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage && successMessage.style.display !== 'none') {
+                document.querySelector('.resetPasswordClass').value = '';
+            }
+        });
+
+        // Client-side validation for reset password
+        document.querySelector('.resetPasswordClass').addEventListener('input', function () {
+            const password = this.value;
+            const validationMessage = document.getElementById('validation_resetPassword');
+            if (password.length < 6 && password !== '') {
+                validationMessage.textContent = 'Password must be at least 6 characters';
+            } else {
+                validationMessage.textContent = '';
+            }
+        });
+
+        // Form submission validation
+        document.querySelector('form').addEventListener('submit', function (event) {
+            const password = document.querySelector('.resetPasswordClass').value;
+            const validationMessage = document.getElementById('validation_resetPassword');
+            if (password.length < 6) {
+                event.preventDefault();
+                validationMessage.textContent = 'Password must be at least 6 characters';
+            }
+        });
+    </script>
+</body>
+</html>

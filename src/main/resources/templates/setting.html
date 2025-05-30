@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+<html lang="en">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Profile</title>
+	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+	<style>
+		body {
+			font-family: 'Montserrat', sans-serif;
+
+		}
+		/* Responsive styles */
+		@media (max-width: 964px) {
+			.nav-tabs {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.nav-tabs a {
+				padding: 10px 20px;
+				border-radius: 5px;
+				margin-bottom: 5px;
+				border: 1px solid #e0e0e0;
+				border-bottom: none;
+			}
+
+			.nav-tabs a:last-child {
+				border-radius: 0 0 5px 5px;
+				border-bottom: 1px solid #e0e0e0;
+			}
+
+			.form-row {
+				flex-direction: column;
+				align-items: stretch;
+				padding: 10px 0;
+			}
+
+			.form-row div {
+				max-width: 100%;
+				margin: 10px 0;
+				padding: 0 10px;
+			}
+
+			.form-row input {
+				padding: 10px 50px;
+				/* Adjusted padding for smaller screens */
+			}
+
+			.submit-btn {
+				margin-top: 10px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<section
+		style="display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; background-color: #f0f8ff; min-height: 100vh;">
+		<!-- Success and Error Messages -->
+		<div>
+			<div id="successMessage" th:if="${successMessage}" class="success-message"
+				style="padding: 10px; margin: 10px 0; border-radius: 5px; text-align: center; width: 100%; background-color: #d4edda; color: #155724;">
+				<p th:text="${successMessage}"></p>
+			</div>
+			<div id="errorMessage" th:if="${errorMessage}" class="error-message"
+				style="padding: 10px; margin: 10px 0; border-radius: 5px; text-align: center; width: 100%; background-color: #f8d7da; color: #721c24;">
+				<p th:text="${errorMessage}"></p>
+			</div>
+		</div>
+		<!-- Content Section with Horizontal Navigation -->
+		<div
+			style="flex: 1; min-width: 0; background-color: #fff; border: 1px solid #e0e0e0; border-radius: 5px; padding: 20px;">
+
+			<form action="/UpdateProfile" method="post" th:action="@{/UpdateProfile}"
+				style="flex-wrap: wrap; justify-content: center; background-color: #FDF9FD; border-radius: 10px; padding: 0; border: 1px solid #ddd; padding-top: 20px;">
+				<h2 style="font-size: 24px; color: #333; text-align: center; margin-bottom: 10px;">
+					<i class="fas fa-user"></i> Profile
+				</h2>
+
+				<!-- Tabs -->
+				<div class="nav-tabs"
+					style="display: flex; justify-content: center; margin-bottom: 10px; width: 100%; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap;">
+					<a href="setting"
+						style="text-decoration: none; color: white; padding: 10px 40px; background-color: #0B2F8B; border-radius: 5px 0 0 0; flex: 1; text-align: center; border-bottom: none;">
+						<i class="fas fa-user"></i> Profile
+					</a>
+					<a href="access"
+						style="text-decoration: none; color: #000; padding: 10px 40px; background-color: #fff; border: 1px solid #e0e0e0; border-left: none; border-bottom: none; flex: 1; text-align: center;">
+						<i class="fas fa-key"></i> Access
+					</a>
+					<a href="changeReset"
+						style="text-decoration: none; color: #000; padding: 10px 40px; background-color: #fff; border: 1px solid #e0e0e0; border-left: none; border-radius: 0 5px 0 0; border-bottom: none; flex: 1; text-align: center;">
+						<i class="fas fa-sync"></i> Change Reset
+					</a>
+				</div>
+
+				<div class="container">
+					<input type="hidden" id="userId" name="userId" value="someUserId" th:field="*{userId}"
+						th:value="${user.userId}" />
+					<div class="row" style="margin-bottom: 20px;">
+						<div class="col-12 col-md-4 mb-3">
+							<label class="form-label">Name</label>
+							<input type="text" class="form-control" id="profileName" name="userName" value="sdfghjk"
+								th:value="${user.userName}" placeholder="Username.." required>
+							<p id="validation_profileUsername" style="color:red"></p>
+						</div>
+						<div class="col-12 col-md-4 mb-3">
+							<label class="form-label">Old Password</label>
+							<input type="password" class="form-control" id="oldPassword" name="oldPassword"
+								value="sdfghjk" placeholder="******" autocomplete="current-password" required>
+							<p id="validation_currentProfilePassword" style="color:red"></p>
+						</div>
+						<div class="col-12 col-md-4 mb-3">
+							<label class="form-label">New Password</label>
+							<input type="password" class="form-control" id="newPassword" name="newPassword"
+								value="sdfghjk" placeholder="******" autocomplete="new-password">
+							<p id="validation_newProfilePassword" style="color:red"></p>
+						</div>
+					</div>
+					<div class="text-center mb-3">
+						<button type="submit"
+							style="background-color: #157206; border: none; border-radius: 5px; padding: 8px 20px; font-size: 14px; color: #fff;">
+							<i class="fas fa-check"></i> Change
+						</button>
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</section>
+	<script>
+		setTimeout(function () {
+			const successMessage = document.getElementById('successMessage');
+			const errorMessage = document.getElementById('errorMessage');
+			if (successMessage) successMessage.style.display = 'none';
+			if (errorMessage) errorMessage.style.display = 'none';
+		}, 3000);
+		document.addEventListener('DOMContentLoaded', function () {
+			const successMessage = document.getElementById('successMessage');
+			if (successMessage && successMessage.style.display !== 'none') {
+				document.getElementById('oldPassword').value = '';
+				document.getElementById('newPassword').value = '';
+			}
+		});
+	</script>
+</body>
+
+</html>

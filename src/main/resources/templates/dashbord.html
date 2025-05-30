@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="refresh" content="5">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<title>Insert title here</title>
+	
+	<style>
+		body {
+			font-family: 'Montserrat', sans-serif !important;
+		}
+		.card {
+			box-shadow: 2px 2px 2px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 1rem;
+		}
+
+		.row {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.card-body {
+			flex: 1 1 auto;
+			padding: 0;
+			/* Remove default padding to control spacing manually */
+			display: flex;
+			flex-direction: column;
+			/* Stack the text/icon row and count vertically */
+			width: 100%;
+		}
+		
+
+		/* New container for text and icon in the same line */
+		.text-icon-container {
+			display: flex;
+			justify-content: space-between;
+			/* Text on left, icon on right */
+			align-items: center;
+			/* Vertically center the text and icon */
+			width: 100%;
+			padding: 0 0.5rem;
+			/* Add padding to match the spacing in the image */
+		}
+
+		/* Style for the text and count container */
+		.text-count-container {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			/* Align text and count to the left */
+			flex: 1;
+			padding: 0 0.5rem;
+			/* Add padding to align with the text-icon-container */
+		}
+
+		/* Style for the count */
+		.h5 {
+			display: flex;
+			justify-content: flex-start;
+			/* Align count to the left */
+			align-items: center;
+			width: 100%;
+			text-align: left;
+		}
+
+		/* Style for the icon */
+		.col-auto {
+			display: flex;
+			align-items: center;
+			margin-right: 0.5rem;
+			/* Add a small margin to push the icon closer to the right edge */
+		}
+
+		/* Ensure the text is aligned properly */
+		.text-xs {
+			text-align: left;
+		}
+
+		/* New styles to fix defects */
+		/* Change button text color to ensure visibility */
+		.btn-success {
+			color: #fff !important;
+			/* Set text color to white for visibility against green background */
+		}
+
+		/* Ensure responsiveness for cards */
+		@media (max-width: 768px) {
+			.row {
+				flex-wrap: wrap;
+				/* Allow cards to wrap on smaller screens */
+				justify-content: center;
+				/* Center cards */
+			}
+
+			.col-xl-2,
+			.col-xl-3 {
+				flex: 0 0 100%;
+				/* Full width on smaller screens */
+				max-width: 300px;
+				/* Limit card width */
+				margin: 10px auto !important;
+				/* Center cards with consistent margin */
+			}
+
+			.resetCount,
+			.btn-success {
+				width: 100% !important;
+				/* Full width on smaller screens */
+				margin: 5px 0 !important;
+				/* Adjust margins for better spacing */
+			}
+
+			.form-control.w-25 {
+				width: 100% !important;
+				/* Ensure input field takes full width on mobile */
+			}
+		}
+	</style>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+	<section>
+		<div class="container mt-4">
+
+			<form th:action="@{/resetcount}" method="post" onsubmit="return confirmReset();"
+				style="display: flex; justify-content: end;">
+				<input type="text" name="reset" class="form-control w-25 resetCount me-3" placeholder="Reset Count">
+				<button class="btn btn-success form-control w-25 me-4" type="submit">
+					<i class="fas fa-sync"></i> Reset
+				</button>
+			</form>
+			<script>
+				function confirmReset() {
+					return confirm("Are you sure you want to reset the dashboard?");
+				}
+			</script>
+
+			<!-- Total In Count - Main Gate -->
+			<h5>TOTAL <span class="fw-bold">IN</span> COUNT <span class="badge fs-6 bg-primary"
+					style="color:white;">Main Gate</span></h5>
+
+			<div class="row d-flex">
+				<!-- Card 1 - OPERATION -->
+				<div class="col-xl-2 col-lg-2 col-md-6 mb-4 ml-lg-3 mx-lg-3"
+					onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href="maingateOperation"
+										style="text-decoration: none; color: red;">OPERATION <i
+											class="fas fa-calendar fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="operation_staff" th:text="${totalInscanRecordCountForOperation}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 2 - DRIVER -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href="maingateDriver"
+										style="text-decoration: none; color: #0B2F8B;">DRIVER<i
+											class="fas fa-truck fa-xl text-gray-300"
+											style="MARGIN-LEFT: 7PX ! important;"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="driver_staff" th:text="${totalInscanRecordCount}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 3 - PROJECT -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href="maingeteProject"
+										style="text-decoration: none; color: rgb(250, 207, 5);">PROJECT <i
+											class="fas fa-id-card fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="project_staff" th:text="${totalInscanRecordCountForProject}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 4 - VISITOR -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href="maingeteVisitor"
+										style="text-decoration: none; color: green;">VISITOR <i
+											class="fas fa-users fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="visitor" th:text="${totalInscanRecordCountForVisitor}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 5 - TOTAL -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: red;">TOTAL</a>
+								</div>
+								<div class="col-auto"></div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="total">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- TOTAL IN COUNT - License Area -->
+			<h5>TOTAL <span class="fw-bold">IN</span> COUNT <span class="badge bg-danger" style="color:white;">License
+					Area</span></h5>
+
+			<div class="row d-flex">
+				<!-- Card 1 - OPERATION -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: red;">OPERATION <i
+											class="fas fa-calendar fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="license_operation_staff"
+										th:text="${totalLicenseGateRecordCountForOperation}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 2 - DRIVER -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: #0B2F8B;">DRIVER<i
+											class="fas fa-truck fa-xl text-gray-300"
+											style="MARGIN-LEFT: 7PX ! important;"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="license_driver_staff" th:text="${totalLicenseGateRecordCount}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 3 - PROJECT -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" "
+										style="text-decoration: none; color: rgb(250, 207, 5);">PROJECT <i
+											class="fas fa-id-card fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="license_project_staff"
+										th:text="${totalLicenseGateRecordCountForProject}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 4 - VISITOR -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: green;">VISITOR <i
+											class="fas fa-users fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="license_visitor_staff"
+										th:text="${totalLicenseGateRecordCountForVisitor}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 5 - TOTAL -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: red;">TOTAL</a>
+								</div>
+								<div class="col-auto"></div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="license_total">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- TOTAL IN COUNT - De-License Area -->
+			<h5>TOTAL <span class="fw-bold">IN</span> COUNT <span class="badge bg-success"
+					style="color:white;">De-License Area</span></h5>
+
+			<div class="row d-flex">
+				<!-- Card 1 - OPERATION -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: red;">OPERATION <i
+											class="fas fa-calendar fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="delicenseoperation">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 2 - DRIVER -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: #0B2F8B;">DRIVER <i
+											class="fas fa-truck fa-xl text-gray-300"
+											style="MARGIN-LEFT: 7PX ! important;"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="delicensedriver">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 3 - PROJECT -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" "
+										style="text-decoration: none; color: rgb(250, 207, 5);">PROJECT <i
+											class="fas fa-id-card fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="delicenseproject">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 4 - VISITOR -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: green;">VISITOR <i
+											class="fas fa-users fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="delicensevisitor">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 5 - TOTAL -->
+				<div class="col-xl-2 col-md-6 mb-4 ml-lg-3 mx-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: red;">TOTAL</a>
+								</div>
+								<div class="col-auto"></div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="delicense_total">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Total Staff -->
+			<h5>TOTAL STAFF <span class="badge bg-info" style="color:white;">Total Staff</span></h5>
+			<div class="row d-flex">
+				<!-- Card 1 - OPERATION -->
+				<div class="col-xl-3 col-md-6 mb-4 ml-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href="" style="text-decoration: none; color: red;">OPERATION <i
+											class="fas fa-calendar fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;"><span
+										th:text="${totalOperationRecordCount}"></span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 2 - DRIVER -->
+				<div class="col-xl-3 col-md-6 mb-4 ml-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" "
+										style="text-decoration: none; color: #0B2F8B;MARGIN-LEFT: 7PX;">DRIVER <i
+											class="fas fa-truck fa-xl text-gray-300"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span th:text="${totalDriverRecordCount}"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 3 - PROJECT -->
+				<div class="col-xl-3 col-md-6 mb-4 ml-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" "
+										style="text-decoration: none; color: rgb(250, 207, 5);">PROJECT <i
+											class="fas fa-id-card fa-xl text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span th:text="${totalProjectRecordCount}"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Card 4 - VISITOR -->
+				<div class="col-xl-3 col-md-6 mb-4 ml-lg-3" onclick="window.location.href='maingateOperation'">
+					<div class="card border-left-danger shadow h-100 py-2">
+						<div class="card-body">
+							<div class="text-icon-container">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+									<a class="fw-bold" href=" " style="text-decoration: none; color: green;">VISITOR <i
+											class="fas fa-users fa-lg text-gray-900"></i></a>
+								</div>
+							</div>
+							<div class="text-count-container">
+								<div class="h5 mb-0 font-weight-bolder text-gray-900"
+									style="font-weight: bolder; font-size: 30px;">
+									<span id="visitor_staff" th:text="${totalVisitorRecordCount}">0</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>
+
+<script>
+	$(document).ready(function () {
+		// Get the values from the spans and convert them to integers
+		var operationStaffCount = parseInt($("#operation_staff").text());
+		var driverStaffCount = parseInt($("#driver_staff").text());
+		var project_staff = parseInt($("#project_staff").text());
+		var visitor_staff = parseInt($("#visitor").text());
+		// Calculate the total
+		var total = operationStaffCount + driverStaffCount + project_staff + visitor_staff;
+
+		// Display the total in the "total" span
+		$("#total").text(total);
+
+		// Get the values from the spans and convert them to integers
+		var licenseoperationStaffCount = parseInt($("#license_operation_staff").text());
+		var licensedriverStaffCount = parseInt($("#license_driver_staff").text());
+		var licenseproject_staff = parseInt($("#license_project_staff").text());
+		var licensevisitor_staff = parseInt($("#license_visitor_staff").text());
+
+		// Calculate the total
+		var license_total = licenseoperationStaffCount + licensedriverStaffCount + licenseproject_staff + licensevisitor_staff;
+
+		// Display the total in the "total" span
+		$("#license_total").text(license_total);
+
+		var delicenseoperation = operationStaffCount - licenseoperationStaffCount;
+		$("#delicenseoperation").text(delicenseoperation);
+
+		var delicensedriver = driverStaffCount - licensedriverStaffCount;
+		$("#delicensedriver").text(delicensedriver);
+
+		var delicenseproject = project_staff - licenseproject_staff;
+		$("#delicenseproject").text(delicenseproject);
+
+		var delicensevisitor = visitor_staff - licensevisitor_staff;
+		$("#delicensevisitor").text(delicensevisitor);
+
+		// Calculate the total
+		var delicense_total = delicenseoperation + delicensedriver + delicenseproject + delicensevisitor;
+
+		// Display the total in the "total" span
+		$("#delicense_total").text(delicense_total);
+	});
+
+/*
+	setTimeout(function () {
+		console.log("Refreshing...");
+		window.location.reload();
+	}, 5000);
+*/
+
+
+</script>

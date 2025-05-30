@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css}" rel="stylesheet" />
+	<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js}"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+	<title>Employee</title>
+	<link th:href="@{/styles.css}" rel="stylesheet" />
+</head>
+
+<body>
+	<section>
+		<style>
+			body {
+				font-family: 'Montserrat', sans-serif;
+			}
+
+			.image-container {
+				text-align: center;
+				position: relative;
+			}
+
+			.image-id {
+				position: absolute;
+				top: 55%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 5px;
+			}
+
+			/* Card layout - 5 cards per row on larger screens */
+			.row.mb-4 {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: start;
+			}
+
+			.col-lg-2 {
+				flex: 0 0 20%;
+				/* 5 cards per row */
+				max-width: 20%;
+			}
+
+			.card {
+				width: 100%;
+				height: 300px;
+				margin: 0;
+			}
+
+			/* Style for buttons within the card */
+			.btn {
+				white-space: nowrap;
+				display: block;
+				text-align: center;
+				border-radius: 0 0 4px 4px;
+				/* Match card's bottom corners */
+			}
+
+			/* Responsive Adjustments */
+			@media (max-width: 576px) {
+
+				/* Mobile view */
+				.container {
+					padding: 0 10px;
+				}
+
+				.mt-5 {
+					margin-top: 2rem !important;
+				}
+
+				.ms-3 {
+					margin-left: 0.5rem !important;
+				}
+
+				.d-flex {
+					flex-direction: column;
+					align-items: stretch;
+					gap: 10px;
+				}
+
+				#transporter_count,
+				#mysubmit,
+				#searchInput {
+					width: 100% !important;
+					margin-left: 0 !important;
+				}
+
+				#searchInput {
+					max-width: 100%;
+					/* Prevent overflow */
+				}
+
+				.col-sm-3,
+				.col-sm-1,
+				.col-sm-4 {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+
+				.col-lg-2 {
+					flex: 0 0 50%;
+					/* 2 cards per row */
+					max-width: 50%;
+				}
+
+				.btn {
+					font-size: 14px;
+					/* Adjust font size for buttons */
+				}
+
+				.card {
+					height: 280px;
+					/* Slightly reduce card height for mobile */
+				}
+			}
+
+			@media (min-width: 577px) and (max-width: 768px) {
+
+				/* Tablet view */
+				.d-flex {
+					flex-direction: row;
+					flex-wrap: wrap;
+					gap: 10px;
+				}
+
+				#transporter_count {
+					width: 40% !important;
+				}
+
+				#mysubmit {
+					width: 20% !important;
+				}
+
+				#searchInput {
+					width: 35% !important;
+					margin-left: 0 !important;
+					max-width: 100%;
+					/* Prevent overflow */
+				}
+
+				.col-lg-2 {
+					flex: 0 0 33.33%;
+					/* 3 cards per row */
+					max-width: 33.33%;
+				}
+
+				.btn {
+					font-size: 15px;
+				}
+
+				.card {
+					height: 290px;
+				}
+			}
+
+			@media (min-width: 769px) and (max-width: 992px) {
+
+				/* Small desktop */
+				#searchInput {
+					width: 100% !important;
+					margin-left: 14rem !important;
+					max-width: 100%;
+					/* Prevent overflow */
+				}
+
+				.col-lg-2 {
+					flex: 0 0 25%;
+					/* 4 cards per row */
+					max-width: 25%;
+				}
+
+				.btn {
+					font-size: 16px;
+				}
+
+				.card {
+					height: 300px;
+				}
+			}
+
+			@media (min-width: 993px) {
+
+				/* Large desktop */
+				#searchInput {
+					width: 19rem !important;
+					margin-left: 14rem !important;
+					/* Adjusted to prevent overflow */
+				}
+
+				.col-lg-2 {
+					flex: 0 0 20%;
+					/* 5 cards per row */
+					max-width: 20%;
+				}
+
+				.btn {
+					font-size: 16px;
+				}
+
+				.card {
+					height: 300px;
+				}
+			}
+
+			.btn-primary {
+				background-color: #0B2F8B;
+				border-color: #0B2F8B;
+			}
+
+			.btn-primary:hover {
+				background-color: #0B2F8B;
+				/* Keeps the same color on hover */
+			}
+
+			.operator-name {
+				font-size: 12px;
+				font-weight: bold;
+				white-space: nowrap;
+				/* Prevent wrapping */
+				overflow: hidden;
+				/* Hide overflow */
+				text-overflow: ellipsis;
+				/* Add ellipsis for long text */
+				max-width: 100%;
+				/* Constrain width */
+			}
+
+			.card-body {
+				overflow: hidden;
+				/* Prevent overflow from breaking layout */
+			}
+
+			/* New styles to match card height with image height from operator.html */
+			.image-container {
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.card {
+				height: 100%;
+				min-height: 200px !important;
+				/* Match operator.html min-height */
+				overflow: hidden;
+			}
+
+			.card-body {
+				padding: 10px;
+				flex-grow: 1;
+
+				flex-direction: column;
+				align-items: center;
+				justify-content: space-between;
+				padding-top: 0px !important;
+			}
+
+			.operator-name {
+				word-break: break-word;
+				max-height: 40px;
+				overflow: hidden;
+			}
+
+			/* Responsive adjustments from operator.html */
+			@media (max-width: 576px) {
+				.image-container img {
+					max-width: 100px;
+				}
+
+				.ms-3,
+				.ms-5 {
+					margin-left: 0 !important;
+				}
+
+				.card {
+					min-height: 200px !important;
+					/* Consistent with base */
+				}
+			}
+
+			@media (min-width: 577px) and (max-width: 768px) {
+				.card {
+					min-height: 220px !important;
+					/* Match operator.html medium screen */
+				}
+			}
+
+			@media (min-width: 769px) {
+				#searchInput {
+					margin-left: 14rem !important;
+					width: 100%;
+				}
+			}
+
+			.count-container {
+				margin-bottom: 5px;
+			}
+
+			.count-container+.horizontal-line {
+				content: "";
+				display: block;
+				width: 100%;
+				height: 1px;
+				background-color: #e0e0e0;
+				margin: 0px auto 0px auto;
+				position: relative;
+			}
+
+			.card-body {
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+
+			.count-container {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.count-id {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+
+			.horizontal-line {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.image-container {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.operator-name {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+
+			.text-center {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+			}
+		</style>
+
+		<div class="container mt-3">
+			<div th:if="${successMessage}" class="alert alert-success" id="successMessage">
+				<p th:text="${successMessage}"></p>
+			</div>
+			<div th:if="${errorMessage}" class="alert alert-danger" id="errorMessage">
+				<p th:text="${errorMessage}"></p>
+			</div>
+
+			<script th:inline="javascript">
+				/*<![CDATA[*/
+				// Wrap the code inside a DOMContentLoaded event listener to ensure the elements are available
+				document.addEventListener("DOMContentLoaded", function () {
+					// Add a timeout function to hide the messages after 5 seconds (adjust as needed)
+					setTimeout(function () {
+						var successMessage = document.getElementById('successMessage');
+						var errorMessage = document.getElementById('errorMessage');
+
+						if (successMessage) {
+							successMessage.style.display = 'none';
+						}
+
+						if (errorMessage) {
+							errorMessage.style.display = 'none';
+						}
+					}, 5000);  // 5000 milliseconds = 5 seconds
+				});
+                /*]]>*/
+			</script>
+
+			<div class="row">
+				<div class="mt-3 mb-3 d-flex">
+					<div class="col-sm-3">
+						<input type="number" name="transporter_count" id="transporter_count" class="form-control ms-3"
+							placeholder="Enter Number of Transporter" min="1" required
+							oninvalid="this.setCustomValidity('Please enter a positive number greater than 0')"
+							onchange="this.setCustomValidity('')" />
+					</div>
+					<div class="col-sm-1">
+						<input type="button" id="mysubmit" value="Add Transporter" class="btn btn-primary ms-5"
+							th:onclick="addtransporter()" required />
+					</div>
+					<div class="col-sm-4">
+						<input type="text" id="searchInput" class="form-control ms-3"
+							placeholder="Search by Name or Aadhar" />
+					</div>
+				</div>
+				<div id="transporter_fields" class="mt-3 ms-3" style="display: none;"></div>
+			</div>
+
+			<div class="row mb-4">
+				<div th:each="transporter : ${transporterDetails}" class="col-lg-2 col-md-3 col-sm-6 mb-3">
+					<div class="card mb-4 ms-2 d-flex flex-column">
+						<div class="card-body text-center"
+							style="flex-grow: 1;flex-direction: column; align-items: center; justify-content: space-between;">
+							<div class="badge-container" style=" margin-bottom: 10px;">
+								<div class="badge badge-danger my-1 rounded text-center font-weight-bold text-white bg-danger"
+									th:if="${#lists.contains(operatorTotalDetails.![ofcid], transporter.id) && #lists.contains(operatorTotalDetails.![name], transporter.fullName)}"
+									style="font-size:15px">
+									Already in Plant
+								</div>
+							</div>
+
+
+							<div class="count-container">
+								<h5 class="count-id" th:text="${transporter.id}">ID: 123</h5>
+							</div>
+							<div class="horizontal-line"></div>
+							<div class="image-container">
+								<img src="img/driving 1.png" alt="Operation Cylinder Image" class="img-fluid"
+									style="max-height: 150px;" />
+								<!--	<h5 class="image-id" th:text="${operator.id}">ID: 123</h5> -->
+							</div>
+
+							<!-- Operator Name -->
+							<th:block th:if="${not #strings.isEmpty(transporter.fullName)}">
+								<div class="operator-name mt-2" style="font-size: 12px; font-weight: bold;">
+									<label th:text="${transporter.fullName}"></label>
+								</div>
+								<div class="aadhar-number" style="display: none;" th:text="${transporter.aadharNumber}">
+								</div>
+							</th:block>
+							<th:block th:if="${#strings.isEmpty(transporter.fullName)}">
+								<br />
+							</th:block>
+						</div>
+						<div class="text-center">
+							<!-- Add or Edit Buttons -->
+							<th:block th:if="${#strings.isEmpty(transporter.fullName)}">
+								<a th:href="@{/transporterDetails(productId=${transporter.id}, action=add)}"
+									class="btn btn-primary">
+									<i class="fa fa-plus" aria-hidden="true" style="font-weight: bold;"></i> Add
+								</a>
+							</th:block>
+							<th:block th:if="${not #strings.isEmpty(transporter.fullName)}">
+								<a th:href="@{/transporterDetails(productId=${transporter.id}, action=edit)}"
+									class="btn btn-primary">
+									<i class="fa fa-edit" style="font-weight: 900;"></i> Edit
+								</a>
+							</th:block>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>
+
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+<script th:inline="javascript">
+	var transporterData = [];
+	var currentCount = 0; // Initialize currentCount to 0
+
+	function addtransporter() {
+		transporterData = [];
+		var transporterCount = parseInt(document.getElementById('transporter_count').value);
+		var transporterFields = document.getElementById('transporter_fields');
+
+		// Add validation for invalid data (0 or negative values)
+		if (isNaN(transporterCount) || transporterCount <= 0) {
+			alert("Please enter a valid number greater than 0.");
+			return; // Stop execution if the input is invalid
+		}
+
+		for (var i = 1; i <= transporterCount; i++) {
+			currentCount++; // Increment currentCount
+			var transporterText = document.createElement('p');
+			transporterText.textContent = currentCount; // Use currentCount for display
+			transporterFields.appendChild(transporterText);
+			transporterData.push(currentCount); // Push currentCount to an array
+		}
+
+		console.log(transporterData);
+		submittransporter(transporterData);
+	}
+	// Define the submitOperator function before it's called
+	function submittransporter(transporterData) {
+		var xhr = new XMLHttpRequest();
+		var url = '/submittransporter'; // Change the URL to your server endpoint
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				console.log(xhr.status);
+				if (xhr.status === 200) {
+					var response = JSON.parse(xhr.responseText);
+					var pop = "Add count or add Transporter successfully"; // Fixed Defect 3
+					alert(pop);
+					location.reload();
+					setTimeout(function () {
+						location.reload();
+					}, 1000);
+				} else {
+					// Error occurred
+				}
+			}
+		};
+
+		xhr.send(JSON.stringify(transporterData));
+	}
+</script>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		let searchInput = document.getElementById("searchInput");
+
+		searchInput.addEventListener("input", function () {
+			let searchValue = this.value.trim().toLowerCase();
+			console.log(searchValue);
+			let contractorCards = document.querySelectorAll(".col-lg-2"); // Cards of workmen
+
+			contractorCards.forEach(card => {
+				let name = card.querySelector(".operator-name label")?.textContent.toLowerCase() || "";
+				let aadhar = card.querySelector(".aadhar-number")?.textContent.toLowerCase() || ""; // Get Aadhar number
+
+				if (name.includes(searchValue) || aadhar.includes(searchValue)) {
+					card.style.display = "block"; // Show matching card
+				} else {
+					card.style.display = "none"; // Hide non-matching cards
+				}
+			});
+		});
+	});
+
+	document.addEventListener("keydown", function (event) {
+		if (event.ctrlKey && event.key === "f") {
+			event.preventDefault();
+			document.getElementById("searchInput").focus();
+		}
+	});
+</script>

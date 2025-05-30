@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+	<style>
+		body {
+			font-family: 'Montserrat', sans-serif;
+			/*background-color: #f4f4f4;*/
+		}
+
+		#a {
+			margin: 0 10px;
+			padding: 20px;
+			background-color: #FDF9FD !important;
+			border-radius: 5px;
+			box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+		}
+
+		h1 {
+			text-align: center;
+			color: #007bff;
+			padding: 15px 0;
+			border-bottom: 2px solid #007bff;
+			margin-bottom: 25px;
+		}
+
+		/* Updated Form Styling to Match Bootstrap Consistency */
+		form {
+			margin-top: 20px;
+			padding: 15px;
+		}
+
+		label {
+			display: block;
+			font-weight: bold;
+			margin-top: 10px;
+			color: #333;
+		}
+
+		input[type="text"],
+		textarea,
+		select {
+			width: 100%;
+			padding: 8px;
+			margin-top: 5px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			font-size: 16px;
+			box-sizing: border-box;
+		}
+
+		input[type="text"]:focus,
+		textarea:focus,
+		select:focus {
+			border-color: #007bff;
+			outline: none;
+			box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+		}
+
+		/* Button Styling Consistent with Bootstrap */
+		button,
+		.btn {
+			padding: 10px 20px;
+			border-radius: 4px;
+			margin-top: 15px;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		.btn-success {
+			background-color: #28a745;
+			border-color: #28a745;
+		}
+
+
+
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+		}
+
+		button:hover,
+		.btn:hover {
+			opacity: 0.9;
+		}
+
+		/* Responsive Design */
+		@media (max-width: 768px) {
+			#a {
+				margin: 0 5px;
+				padding: 15px;
+			}
+
+			button,
+			.btn {
+				width: 100%;
+				margin-top: 10px;
+			}
+		}
+
+		.btn-primary {
+			background-color: #0B2F8B;
+			border-color: #0B2F8B;
+		}
+	</style>
+</head>
+
+<body>
+	<section>
+		<div th:if="${successMessage}">
+			<div class="alert alert-success">
+				<p th:text="${successMessage}"></p>
+			</div>
+		</div>
+		<div th:if="${errorMessage}">
+			<div class="alert alert-danger">
+				<p th:text="${errorMessage}"></p>
+			</div>
+		</div>
+
+		<div id="a" class="mt-4" style="margin: 0 10px;
+    padding: 20px;border-radius: 5px; box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);">
+			<h1 style="text-align: center;color: #007bff;">Mathadi Information</h1>
+			<div class="row" th:if="${selectedMathadi}">
+				<form th:action="@{/mathadisave}" method="post">
+					<label for="id">Token Number:</label>
+					<input type="text" id="id" class="form-control" name="id" th:value="${selectedMathadi.id}" required
+						readonly>
+
+					<label for="aadharNumber">Aadhar Number:</label>
+					<input type="text" id="aadharNumber" class="form-control" name="aadharNumber"
+						th:value="${selectedMathadi.aadharNumber}" required
+						oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 12);">
+
+					<label for="fullName">Full Name:</label>
+					<input type="text" id="fullName" class="form-control" name="fullName"
+						th:value="${selectedMathadi.fullName}" required
+						oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '').replace(/(\..*)\./g, '$1');">
+
+					<label for="mobileNumber">Mobile Number:</label>
+					<input type="text" id="mobileNumber" class="form-control" name="mobileNumber"
+						th:value="${selectedMathadi.mobileNumber}" required
+						oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 10);">
+
+					<label for="address">Address:</label>
+					<input type="text" id="address" class="form-control mb-2" name="address"
+						th:value="${selectedMathadi.address}" required>
+
+					<label for="enumber">Emergency Number:</label>
+					<input type="text" id="enumber" class="form-control" name="enumber"
+						th:value="${selectedMathadi.enumber}" required
+						oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 10);">
+
+					<!-- Firm Select Dropdown -->
+					<label for="firmNameSelect">Select Firm:</label>
+					<select id="firmNameSelect" class="form-control mb-2" name="firmname"
+						onchange="updateContractorSelection()" required>
+						<option value="">Select Firm</option>
+						<option th:each="contractor : ${contractorDetails}" th:if="${contractor.firmName != null}"
+							th:value="${contractor.firmName}" th:text="${contractor.firmName}"
+							th:selected="${selectedMathadi?.firmname == contractor.firmName}"
+							th:attr="data-contractor=${contractor.fullName}">
+						</option>
+					</select>
+
+					<!-- Contractor Select Dropdown -->
+					<label for="contractorNameSelect">Select Contractor:</label>
+					<select id="contractorNameSelect" class="form-control mb-2" name="contractor" required>
+						<option value="">Select Contractor</option>
+						<option th:each="contractor : ${contractorDetails}" th:if="${contractor.fullName != null}"
+							th:value="${contractor.fullName}" th:text="${contractor.fullName}"
+							th:selected="${selectedMathadi?.contractor == contractor.fullName}">
+						</option>
+					</select>
+
+
+
+
+
+					<div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+						<button th:if="${#strings.isEmpty(selectedMathadi.fullName)}" class="btn btn-success me-2"
+							type="submit">
+							<i class="fa fa-plus" aria-hidden="true"></i> Save
+						</button>
+
+						<button th:if="${not #strings.isEmpty(selectedMathadi.fullName)}" class="btn btn-primary me-2"
+							type="submit" style=" background-color: #0B2F8B !important;
+    border-color: #0B2F8B !important;">
+							<i class="fa fa-refresh" aria-hidden="true"></i> Update
+						</button>
+
+						<a th:if="${!#strings.isEmpty(selectedMathadi.id) and 
+               !#strings.isEmpty(selectedMathadi.aadharNumber) and 
+               !#strings.isEmpty(selectedMathadi.fullName) and 
+               !#strings.isEmpty(selectedMathadi.mobileNumber) and 
+               !#strings.isEmpty(selectedMathadi.address)}" th:href="@{/selectedMathadi(id=${selectedMathadi.id})}"
+							class="btn btn-primary me-2">
+							<i class="fa fa-id-card" aria-hidden="true"></i> ID Card
+						</a>
+
+						<a th:href="@{/generateQRCode(data=${selectedMathadi.id})}" class="btn btn-success me-2 d-none">
+							<i class="bi bi-qr-code-scan pe-2"></i>
+						</a>
+
+						<button class="btn btn-danger me-2" onclick="window.location.href='/mathadi'">
+							<i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+						</button>
+
+						<a th:if="${not #strings.isEmpty(selectedMathadi.fullName)}"
+							th:href="@{/delete-Mathadi-details(id=${selectedMathadi.id})}" class="btn btn-danger me-2"
+							onclick="return confirm('Are you sure you want to delete information ?')">
+							<i class="fa fa-trash" aria-hidden="true"></i> Delete
+						</a>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<script th:inline="javascript">
+		function updateContractorSelection() {
+			const firmSelect = document.getElementById('firmNameSelect');
+			const contractorSelect = document.getElementById('contractorNameSelect');
+			const selectedFirm = firmSelect.options[firmSelect.selectedIndex];
+
+			if (selectedFirm.value) {
+				const contractorName = selectedFirm.getAttribute('data-contractor');
+
+				// Find and select matching contractor
+				for (let i = 0; i < contractorSelect.options.length; i++) {
+					if (contractorSelect.options[i].value === contractorName) {
+						contractorSelect.selectedIndex = i;
+						break;
+					}
+				}
+			} else {
+				contractorSelect.selectedIndex = 0;
+			}
+		}
+
+		// Initialize on page load
+		document.addEventListener('DOMContentLoaded', function () {
+			const firmSelect = document.getElementById('firmNameSelect');
+			firmSelect.addEventListener('change', updateContractorSelection);
+
+			// If editing existing Mathadi, auto-select contractor
+			if (firmSelect.value) {
+				updateContractorSelection();
+			}
+		});
+	</script>
+</body>
+
+</html>

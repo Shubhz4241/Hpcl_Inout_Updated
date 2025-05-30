@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <style>
+        .card {
+            box-shadow: 2px 2px 2px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-body {
+            flex: 1 1 auto;
+            padding: 1.25rem;
+        }
+    </style>
+    <link rel="icon" th:href="@{/img/Hindustan.png}" type="image/png">
+  
+<style>
+    body {
+		
+        font-family: 'Poppins', sans-serif;
+        background: #fafafa;
+    }
+     .wrapper {
+		 overflow-y: auto;
+        margin-right:15px;
+        display: flex;
+        width: 100%;
+    }
+    
+
+    .logo {
+        background-color: #f1f1f1;
+        width: 260px;
+    }
+
+    .logo img {
+        width: 250px;
+        margin-left: 5px;
+        margin-right: 30px;
+
+    }
+    
+    
+     #sidebar.btn:hover{
+    color: #fff;
+    transition: all 0.3s;
+    }
+    .line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+    }
+   
+     .wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    }
+	.navbar {
+            background-color: rgb(255, 255, 255);
+            padding: 15px;
+            text-align: center;
+            color: black;
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            max-width: 300px;
+            height: auto;
+             color: black;
+        }
+
+        #datetime {
+            text-align: left;
+        }
+	
+
+
+
+</style>  
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+ 		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+		crossorigin="anonymous">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+    <div class="p-2 " >
+		<div class="navbar bg-secondary shadow rounded p-2">
+        <div class="logo"><a href="#"><img src="/img/logoHPCL.png" class="img-fluid" alt="HPCL Logo"></a></div>
+        <span class="badge"  style="color:white; background-color:#dc3545;">MAIN GATE DASHBOARD</span>
+        <span class="badge" id="datetime" style="color:white; background-color:#007bff;">NOW:</span>
+    </div>
+    <div class="col-12 mx-2 my-2 p-2">
+		<input type="text" class="form-control qrText" placeholder="Your QR code">
+	</div>
+        <div class="container mt-5">
+            <!-- Total In Count - Main Gate -->
+            <h4 class="text-center">TOTAL IN COUNT <span class="badge" style="color:white; background-color:#007bff;">Main Gate</span></h4>
+
+            <div class="row d-flex mx-auto">
+                <!-- Card 1 - OPERATION -->
+                <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">OPERATION</div>
+                                    <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="operation">79</span></div>
+                                </div>
+                                <div class="col-auto" style="margin-top: -17px;">
+                                    <i class="fas fa-calendar fa-lg text-gray-900"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 - DRIVER -->
+                <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">DRIVER</div>
+                                    <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="driver">79</span></div>
+                                </div>
+                                <div class="col-auto" style="margin-top: -1px;">
+                                    <i class="fas fa-truck fa-lg text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 - PROJECT -->
+                <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">PROJECT</div>
+                                    <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="project">79</span></div>
+                                </div>
+                                <div class="col-auto" style="margin-top: -17px;">
+                                    <i class="fas fa-id-card fa-lg text-gray-900"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 - VISITOR -->
+                <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">VISITOR</div>
+                                    <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="visitor">79</span></div>
+                                </div>
+                                <div class="col-auto" style="margin-top: -17px;">
+                                    <i class="fas fa-users fa-lg text-gray-900"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 - TOTAL -->
+                <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">TOTAL</div>
+                                    <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="total">79</span></div>
+                                </div>
+                                <div class="col-auto" style="margin-top: -17px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      
+
+        <!-- Repeat the same structure for License Area -->
+<!-- TOTAL IN COUNT - License Area -->
+
+            <!-- Total In Count - Main Gate -->
+            <h4 class="text-center">TOTAL IN COUNT <span class="badge" style="color:white; background-color:#dc3545;">License Gate</span></h4>
+
+            <div class="row d-flex mx-auto">
+    <!-- Card 1 - OPERATION -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">OPERATION</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="operation_license">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -17px;">
+                        <i class="fas fa-calendar fa-lg text-gray-900"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 2 - DRIVER -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">DRIVER</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="driver_license">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -1px;">
+                        <i class="fas fa-truck fa-lg text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 3 - PROJECT -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">PROJECT</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="project_license">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -17px;">
+                        <i class="fas fa-id-card fa-lg text-gray-900"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 4 - VISITOR -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">VISITOR</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="visitor_license">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -17px;">
+                        <i class="fas fa-users fa-lg text-gray-900"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 5 - TOTAL -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">TOTAL</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="total_license">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -17px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOTAL IN COUNT - De-License Area -->
+<h4 class="text-center">TOTAL IN COUNT <span class="badge" style="color:white; background-color:#28a745;">De-License Area</span></h4>
+
+<div class="row d-flex mx-auto">
+    <!-- Card 1 - OPERATION -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">OPERATION</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="operation_delicense">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -17px;">
+                        <i class="fas fa-calendar fa-lg text-gray-900"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 2 - DRIVER -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">DRIVER</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="driver_license">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -1px;">
+                        <i class="fas fa-truck fa-lg text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 3 - PROJECT -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">PROJECT</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="project_delicense">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -17px;">
+                        <i class="fas fa-id-card fa-lg text-gray-900"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 4 - VISITOR -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">VISITOR</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="visitor_delicense">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -17px;">
+                        <i class="fas fa-users fa-lg text-gray-900"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 5 - TOTAL -->
+    <div class="col-xl-2 col-md-6 mb-4 ml-3" onclick="jump('Operation','main','all')">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">TOTAL</div>
+                        <div class="h5 mb-0 font-weight-bolder text-gray-900" style="font-weight: bolder; font-size: 30px;"><span id="total_delicense">79</span></div>
+                    </div>
+                    <div class="col-auto" style="margin-top: -17px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+        <!-- Repeat the same structure for De-License Area -->
+
+       
+    </section>
+</body>
+</html>
+
+<script>
+    function updateDateTime() {
+        const datetimeElement = document.getElementById("datetime");
+        const currentTime = new Date();
+        const options = {  year: 'numeric', month: 'numeric', day: 'numeric' };
+        const options2 = {   hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const formattedDate = currentTime.toLocaleDateString('en-US', options);
+        const formattedTime = currentTime.toLocaleTimeString('en-US', options2);
+        const formattedDateTime = "NOW: " + formattedDate + " @ " + formattedTime;
+        datetimeElement.textContent = formattedDateTime;
+    }
+
+    // Update the date and time when the page loads
+    updateDateTime();
+
+    // Update the date and time every second (1000 milliseconds)
+    setInterval(updateDateTime, 1000);
+</script>

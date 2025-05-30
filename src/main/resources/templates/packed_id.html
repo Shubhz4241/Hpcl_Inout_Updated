@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+
+<head>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<section>
+		<style>
+			body {
+				font-family: 'Montserrat', sans-serif;
+			}
+
+			.info-item {
+				margin-bottom: 10px;
+				color: #999
+					/* Adjust the margin-bottom as needed */
+			}
+
+			@media print {
+
+				.btn-print,
+				#printButton,
+				#backButton {
+					display: none;
+				}
+			}
+
+			.ms-4 {
+				margin-left: 17.5rem !important;
+			}
+
+			/* New styles to center the form on the page across all views */
+			.container.m-4 {
+				margin: 20px auto !important;
+				/* Center the container with normal padding */
+				max-width: 1344px !important;
+				/* Set a reasonable max-width for desktop */
+				padding: 18px 18px !important;
+				/* Add normal padding on the sides */
+			}
+
+			.container.mt-2.ms-2.mb-3 {
+				margin-left: 0 !important;
+				/* Remove left margin to align with outer container */
+				margin-right: 0 !important;
+				/* Remove right margin to align with outer container */
+			}
+
+			/* Ensure centering when sidebar is toggled */
+			#abc.expanded .container.m-4 {
+				margin: 20px auto !important;
+				/* Maintain centering when sidebar is toggled */
+				max-width: 800px !important;
+				/* Keep the same max-width */
+				padding: 0 15px !important;
+				/* Maintain padding */
+			}
+
+			/* Adjust padding for smaller screens */
+			@media (max-width: 768px) {
+				.container.m-4 {
+					max-width: 100% !important;
+					/* Full width on smaller screens */
+					padding: 0 10px !important;
+					/* Slightly smaller padding on mobile */
+				}
+
+				#abc.expanded .container.m-4 {
+					max-width: 100% !important;
+					/* Full width when sidebar is toggled */
+					padding: 0 10px !important;
+					/* Slightly smaller padding on mobile */
+				}
+			}
+
+			@media (max-width: 576px) {
+				.container.m-4 {
+					padding: 0 5px !important;
+					/* Even smaller padding on very small screens */
+				}
+
+				#abc.expanded .container.m-4 {
+					padding: 0 5px !important;
+					/* Even smaller padding on very small screens */
+				}
+			}
+
+			/* New styles to make the page fully responsive across all devices */
+			/* Header Section */
+			#image2 {
+				max-width: 70px !important;
+				/* Default logo size */
+			}
+
+			#hpcl {
+				font-size: 20px !important;
+				/* Default font size */
+				color: #999 !important;
+				line-height: 1.2;
+				/* Adjust line spacing */
+			}
+
+			#nav1 {
+				padding: 5px 0 !important;
+				/* Adjust padding for the red banner */
+				margin-left: 0 !important;
+				/* Remove left margin */
+				margin-right: 0 !important;
+				/* Remove right margin */
+			}
+
+			#nav1 h2 {
+				font-size: 24px !important;
+				/* Default font size for the red banner */
+				margin: 0 !important;
+				/* Remove default margin */
+			}
+
+			/* Officer Details and QR Code Section */
+			.info-box {
+				padding-left: 15px;
+				/* Add padding to align officer details */
+			}
+
+			.info-item {
+				margin-bottom: 10px !important;
+				/* Default spacing between items */
+				color: #999 !important;
+				/* Default color */
+			}
+
+			.info-item b {
+				font-size: 18px !important;
+				/* Default font size */
+				font-weight: 900 !important;
+				/* Default font weight */
+			}
+
+			#image1 {
+				margin-left: 0 !important;
+				/* Remove the fixed margin entirely */
+				margin: 0 auto !important;
+				/* Center the QR code within its col-md-6 */
+				display: block !important;
+				/* Ensure proper centering */
+				max-width: 100% !important;
+				/* Prevent overflow */
+				width: 200px !important;
+				/* Default size */
+				height: 200px !important;
+			}
+
+			/* Footer Section */
+			#sign1 {
+				margin-top: 20px !important;
+				/* Default spacing above the signature section */
+			}
+
+			#sign1 h3 {
+				font-size: 16px !important;
+				/* Default font size */
+				font-weight: 600;
+				/* Default font weight */
+				color: #000;
+				/* Default color */
+			}
+
+			/* Buttons */
+			#printButton,
+			#backButton {
+				padding: 10px 20px !important;
+				/* Default padding */
+				font-size: 16px !important;
+				/* Default font size */
+			}
+
+			/* Responsive adjustments for all devices */
+			@media (max-width: 1200px) {
+				.container.m-4 {
+					max-width: 100% !important;
+					/* Adjust max-width for large tablets */
+					padding: 15px !important;
+					/* Slightly smaller padding */
+				}
+
+				#abc.expanded .container.m-4 {
+					max-width: 100% !important;
+					padding: 15px !important;
+				}
+			}
+
+			@media (max-width: 992px) {
+				#image2 {
+					max-width: 60px !important;
+					/* Reduce logo size */
+				}
+
+				#hpcl {
+					font-size: 18px !important;
+					/* Reduce font size */
+				}
+
+				#nav1 h2 {
+					font-size: 20px !important;
+					/* Reduce font size for the red banner */
+				}
+
+				.info-item b {
+					font-size: 16px !important;
+					/* Reduce font size */
+				}
+
+				#image1 {
+					margin: 20px auto !important;
+					/* Ensure centering on smaller screens */
+					width: 180px !important;
+					/* Slightly smaller QR code */
+					height: 180px !important;
+				}
+
+				#sign1 h3 {
+					font-size: 14px !important;
+					/* Reduce font size */
+				}
+			}
+
+			@media (max-width: 768px) {
+				.container.m-4 {
+					max-width: 100% !important;
+					padding: 0 10px !important;
+				}
+
+				#abc.expanded .container.m-4 {
+					max-width: 100% !important;
+					padding: 0 10px !important;
+				}
+
+				#image2 {
+					max-width: 50px !important;
+					/* Further reduce logo size */
+				}
+
+				#hpcl {
+					font-size: 16px !important;
+					/* Further reduce font size */
+					line-height: 1.3;
+					/* Adjust line spacing */
+				}
+
+				#nav1 h2 {
+					font-size: 18px !important;
+					/* Further reduce font size */
+				}
+
+				.info-box {
+					padding-left: 0;
+					/* Remove padding on smaller screens */
+				}
+
+				.info-item {
+					margin-bottom: 8px !important;
+					/* Reduce spacing */
+				}
+
+				.info-item b {
+					font-size: 14px !important;
+					/* Further reduce font size */
+				}
+
+				#image1 {
+					width: 150px !important;
+					/* Further reduce QR code size */
+					height: 150px !important;
+				}
+
+				#sign1 h3 {
+					font-size: 12px !important;
+					/* Further reduce font size */
+				}
+
+				#sign1 .col-4 {
+					margin-bottom: 10px;
+					/* Add spacing between columns */
+				}
+
+				#printButton,
+				#backButton {
+					display: block;
+					/* Stack buttons vertically */
+					width: 100%;
+					/* Full width buttons */
+					margin: 10px 0 !important;
+					/* Add spacing between buttons */
+					font-size: 14px !important;
+					/* Reduce font size */
+					padding: 8px 15px !important;
+					/* Adjust padding */
+				}
+			}
+
+			@media (max-width: 576px) {
+				.container.m-4 {
+					padding: 0 5px !important;
+				}
+
+				#abc.expanded .container.m-4 {
+					padding: 0 5px !important;
+				}
+
+				#image2 {
+					max-width: 40px !important;
+					/* Even smaller logo */
+				}
+
+				#hpcl {
+					font-size: 14px !important;
+					/* Even smaller font size */
+				}
+
+				#nav1 h2 {
+					font-size: 16px !important;
+					/* Even smaller font size */
+				}
+
+				.info-item b {
+					font-size: 12px !important;
+					/* Even smaller font size */
+				}
+
+				#image1 {
+					width: 120px !important;
+					/* Even smaller QR code */
+					height: 120px !important;
+				}
+
+				#sign1 h3 {
+					font-size: 10px !important;
+					/* Even smaller font size */
+				}
+
+				#printButton,
+				#backButton {
+					font-size: 12px !important;
+					/* Even smaller font size */
+					padding: 6px 10px !important;
+					/* Adjust padding */
+				}
+			}
+
+			/* New styles to fix QR code overflow when sidebar is toggled */
+			#abc.expanded #image1 {
+				margin: 0 auto !important;
+				/* Maintain centering when sidebar is toggled */
+				max-width: 100% !important;
+				/* Prevent overflow */
+				width: 150px !important;
+				/* Reduce size when sidebar is toggled to fit within smaller container */
+				height: 150px !important;
+			}
+
+			/* Ensure the QR code's parent container fits within the inner form */
+			#abc.expanded .col-md-6 {
+				display: flex;
+				justify-content: center;
+				/* Center the QR code within the column */
+				max-width: 100% !important;
+				/* Prevent the column from overflowing */
+			}
+
+			/* Inner Form Adjustments */
+			.container.mt-2.ms-2.mb-3 {
+				width: calc(100% - 10px) !important;
+				/* Slightly smaller than the outer container (5px gap on each side) */
+				max-width: 1324px !important;
+				/* Max width for desktop, slightly less than 1344px */
+				margin: 5px auto !important;
+				/* Small gap between inner and outer form */
+				padding: 15px !important;
+				/* Normal padding inside the inner form */
+				box-sizing: border-box !important;
+				/* Ensure padding is included in width */
+			}
+
+			/* Ensure inner form width adjusts when sidebar is toggled */
+			#abc.expanded .container.mt-2.ms-2.mb-3 {
+				max-width: 780px !important;
+				/* Slightly less than 800px to maintain small gap */
+				width: calc(100% - 10px) !important;
+				/* Maintain small gap */
+				margin: 5px auto !important;
+				padding: 10px !important;
+			}
+
+			/* Responsive adjustments for inner form and QR code */
+			@media (max-width: 1200px) {
+				.container.mt-2.ms-2.mb-3 {
+					max-width: calc(100% - 10px) !important;
+					/* Maintain small gap */
+					width: calc(100% - 10px) !important;
+					padding: 12px !important;
+					/* Slightly smaller padding */
+				}
+			}
+
+			@media (max-width: 992px) {
+				.container.mt-2.ms-2.mb-3 {
+					padding: 10px !important;
+					/* Adjust padding */
+				}
+
+				#abc.expanded .col-md-6 {
+					max-width: 100% !important;
+				}
+			}
+
+			@media (max-width: 768px) {
+				.container.mt-2.ms-2.mb-3 {
+					padding: 8px !important;
+					/* Further reduce padding */
+				}
+			}
+
+			@media (max-width: 576px) {
+				.container.mt-2.ms-2.mb-3 {
+					padding: 5px !important;
+					/* Minimal padding on mobile */
+				}
+			}
+
+			/* Print-specific styles to match the image layout */
+			@media print {
+				.container.mt-2.ms-2.mb-3 {
+					width: 100% !important;
+					max-width: 100% !important;
+					margin: 0 !important;
+					padding: 10px !important;
+				}
+
+				.row {
+					display: flex;
+					flex-wrap: wrap;
+				}
+
+				.col-md-2,
+				.col-md-8,
+				.col-md-6,
+				.col-4 {
+					float: left;
+					box-sizing: border-box;
+				}
+
+				.col-md-2 {
+					width: 16.66% !important;
+				}
+
+				.col-md-8 {
+					width: 66.66% !important;
+				}
+
+				.col-md-6 {
+					width: 50% !important;
+					display: flex;
+					justify-content: center;
+					align-items: flex-start;
+				}
+
+				.col-4 {
+					width: 33.33% !important;
+				}
+
+				#image2 {
+					max-width: 60px !important;
+				}
+
+				#hpcl {
+					font-size: 16px !important;
+					line-height: 1.2;
+					margin: 0 !important;
+					text-align: center;
+				}
+
+				#nav1 {
+					background-color: red !important;
+					padding: 5px 0 !important;
+					margin: 5px 0 !important;
+				}
+
+				#nav1 h2 {
+					font-size: 18px !important;
+					color: white !important;
+					text-align: center !important;
+					margin: 0 !important;
+				}
+
+				.info-box {
+					padding-left: 10px !important;
+				}
+
+				.info-item {
+					margin-bottom: 8px !important;
+				}
+
+				.info-item b {
+					font-size: 14px !important;
+				}
+
+				#image1 {
+					margin: 0 auto !important;
+					width: 150px !important;
+					height: 150px !important;
+					max-width: 100% !important;
+				}
+
+				#sign1 {
+					margin-top: 15px !important;
+				}
+
+				#sign1 h3 {
+					font-size: 12px !important;
+					text-align: center !important;
+					margin: 0 !important;
+				}
+			}
+
+			@media print {
+				#hpcl {
+					font-size: 16px !important;
+					line-height: 1.2;
+					margin: 0 !important;
+					text-align: center !important;
+					/* Fixed Defect 10 */
+				}
+			}
+
+			@media print {
+				.row {
+					display: flex;
+					flex-wrap: nowrap;
+					justify-content: center;
+				}
+
+				.col-md-2 {
+					width: 16.66% !important;
+					text-align: center;
+				}
+
+				.col-md-8 {
+					width: 66.66% !important;
+					text-align: center;
+				}
+
+				.col-md-6 {
+					width: 50% !important;
+					display: flex;
+					justify-content: center;
+					align-items: flex-start;
+				}
+			}
+		</style>
+		<div class="container m-4 "
+			style="box-shadow: 0px 10px 10px 10px rgba(0, 0, 0, 0.1);z-index:-1; max-width: 1344px; margin: 20px auto;">
+			<div class="container mt-2 ms-2 mb-3" style="box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);z-index:2;">
+				<div class="print-content" id="contentToPrint">
+					<div class="row align-items-center">
+						<div class="col-md-2 pt-1">
+							<a><img id="image2" src="/img/Hindustan.png" class="img-fluid" alt="HPCL Logo"
+									style="max-width: 70px;"></a>
+						</div>
+						<div class="col-md-8">
+							<p id="hpcl" class="text-center" style="color:#999;font-size:20px;">
+								Hindustan Petroleum Corporation Limited <br>
+								Sinnar LPG Bottling Plant, G-6, M.I.D.C., Malegaon, Sinnar, Nashik- 422113.
+							</p>
+						</div>
+						<div class="col-md-2"></div>
+					</div>
+					<!--<div id="nav1" class="container mt-1 ms-2" style="background-color: red;">
+						<h2 class="text-center text-white" th:text="'OPR – PT/HPNSK/' + ${selectedProduct.id}">OPR –
+							CON/HPNSK/${selectedProduct.id}</h2>
+					</div> -->
+					<div id="nav1" class="container mt-1 ms-2" style="background-color: red;">
+						<h2 class="text-center text-white"><span
+								th:text="${#strings.capitalize(#strings.toLowerCase(selectedProduct.pack))}"></span>
+						</h2>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 mb-5">
+							<div class="info-box">
+								<div class="info-item">
+									<span><b style="font-weight:900;font-size:18px;">Packed Name:</b></span>
+									<b style="font-weight:900;font-size:18px;"><span
+											th:text="${selectedProduct.fullName}"></span></b>
+								</div>
+								<div class="info-item">
+									<span><b style="font-weight:900;font-size:18px;">Phone:</b></span>
+									<b style="font-weight:900;font-size:18px;"><span
+											th:text="${selectedProduct.mobileNumber}"></span></b>
+								</div>
+								<div class="info-item">
+									<span><b style="font-weight:900;font-size:18px;">Address:</b></span>
+									<b style="font-weight:900;font-size:18px;"><span
+											th:text="${selectedProduct.address}"></span></b>
+								</div>
+								<div class="info-item">
+									<span><b style="font-weight:900;font-size:18px;">Truck Number:</b></span>
+									<b style="font-weight:900;font-size:18px;"><span
+											th:text="${selectedProduct.truckNumber}"></span></b>
+								</div>
+
+								<div class="info-item">
+									<span><b style="font-weight:900;font-size:18px;">Working as:</b></span>
+									<b style="font-weight:900;font-size:18px;"><span
+											th:text="${#strings.capitalize(#strings.toLowerCase(selectedProduct.pack))}"></span></b>
+								</div>
+							</div>
+							<!-- Add any other rows you want to display here -->
+						</div>
+						<div class="col-md-6 d-flex justify-content-center align-items-center mb-5">
+							<img id="image1" th:src="@{/generateQRCode(data='PT/HPNSK/' + ${selectedProduct.id})}"
+								class="ms-4" width="200" height="200" alt="QR Code"
+								style="display: block; margin: 0 auto;" />
+						</div>
+					</div>
+
+					<br>
+					<div id="sign1" class="row mx-0 mt-4 row-b text-center">
+						<div class="col-4">
+							<h3> Sign & Seal of Contractor </h3>
+						</div>
+						<div id="sign2" class="col-4 col-b-1">
+							<h3> Sign. / Thumb Impression of the pass holder </h3>
+						</div>
+						<div id="sign3" class="col-4 col-b-1">
+							<h3> Attestation by HPCL Plant In charge </h3>
+						</div>
+					</div>
+					<div id="nav1" class="container mt-1 ms-2" style="background-color: red;">
+						<h2 class="text-center text-white"><span
+								th:text="${#strings.capitalize(#strings.toLowerCase(selectedProduct.pack))}"></span>
+						</h2>
+					</div>
+				</div>
+			</div>
+			<div class="button-container d-flex justify-content-center gap-3 mt-3">
+				<button id="printButton" class="btn btn-primary">Print Page</button>
+				<button id="backButton" onclick="window.history.back();" class="btn btn-primary">Back</button>
+			</div>
+		</div>
+
+		<script>
+			document.getElementById('printButton').addEventListener('click', function () {
+				var contentToPrint = document.getElementById('contentToPrint').outerHTML;
+				var printWindow = window.open('', '', 'width=1000, height=800');
+				printWindow.document.open();
+				printWindow.document.write('<html><head><title>Print</title></head><body>');
+				printWindow.document.write('<style type="text/css">');
+				// Container styles
+				printWindow.document.write('.container { width: 100%; max-width: 100%; margin: 0; padding: 10px; box-sizing: border-box; }');
+				// Grid layout
+				printWindow.document.write('.row { display: flex; flex-wrap: wrap; }');
+				printWindow.document.write('.col-md-2, .col-md-8, .col-md-6, .col-4 { float: left; box-sizing: border-box; }');
+				printWindow.document.write('.col-md-2 { width: 16.66% !important; }');
+				printWindow.document.write('.col-md-8 { width: 66.66% !important; }');
+				printWindow.document.write('.col-md-6 { width: 50% !important; display: block; }'); // Remove flex to maintain layout
+				printWindow.document.write('.col-4 { width: 33.33% !important; }');
+				// Header styles
+				printWindow.document.write('#image2 { max-width: 60px !important; margin: 0; }');
+				printWindow.document.write('#hpcl { font-size: 16px !important; line-height: 1.2; margin: 0 !important; text-align: center; color: #999; }');
+				// Red banner styles
+				printWindow.document.write('#nav1 { background-color: red !important; padding: 5px 0 !important; margin: 5px 0 !important; }');
+				printWindow.document.write('#nav1 h2 { font-size: 18px !important; color: white !important; text-align: center !important; margin: 0 !important; }');
+				// Officer details and QR code
+				printWindow.document.write('.info-box { padding-left: 10px !important; }');
+				printWindow.document.write('.info-item { margin-bottom: 8px !important; color: #999 !important; }');
+				printWindow.document.write('.info-item b { font-size: 14px !important; font-weight: 900 !important; }');
+				// Fix QR code alignment to match the image
+				printWindow.document.write('#image1 { margin-left: 15.5rem !important; margin-top: 0 !important; width: 150px !important; height: 150px !important; max-width: 100% !important; display: block !important; }');
+				// Footer styles
+				printWindow.document.write('#sign1 { margin-top: 15px !important; margin-left: 0 !important; }');
+				printWindow.document.write('#sign1 h3 { font-size: 12px !important; text-align: center !important; margin: 0 !important; }');
+				printWindow.document.write('</style>');
+				printWindow.document.write(contentToPrint);
+				printWindow.document.write('</body></html>');
+				printWindow.document.close();
+				setTimeout(function () {
+					printWindow.print();
+					printWindow.close();
+				}, 1000);
+			});
+		</script>
+	</section>
+</body>
+
+</html>
